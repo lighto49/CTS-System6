@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using CTS_System6.Data;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -17,6 +18,12 @@ namespace CTS_System6.Models
         public string Country { get; set; }
         public float Rate { get; set; }
         public byte[] ProfilePictuer { get; set; }
+
+        public List<Bids> BidsList { get; set; }
+        public List<Rate> RateList { get; set; }
+        public List<TranslatorsLanguages> TranslatorLanguagesList { get; set; }
+        public List<Projects> ProjectsList { get; set; }
+
 
     }
 }
