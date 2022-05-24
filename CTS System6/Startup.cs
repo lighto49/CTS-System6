@@ -1,6 +1,7 @@
 using CTS_System6.Data;
 using CTS_System6.Data.Migrations;
 using CTS_System6.Models;
+using CTS_System6.Models.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -45,6 +46,8 @@ namespace CTS_System6
                 .AddDefaultTokenProviders();
 
             services.AddControllersWithViews();
+
+            services.AddSingleton<ITranslatorRepository<Projects>, ProjectRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
