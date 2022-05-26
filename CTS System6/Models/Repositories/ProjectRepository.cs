@@ -18,15 +18,15 @@ namespace CTS_System6.Models.Repositories
             projects.Add(entity);
         }
 
-        public void Delete(int id)
+        public void Delete(string id)
         {
             var project = Find(id);
             projects.Remove(project);
         }
 
-        public Projects Find(int id)
+        public Projects Find(string id)
         {
-            var project = projects.SingleOrDefault(b => b.Id == id);
+            var project = projects.SingleOrDefault(b => b.Id.ToString() == id);
             return project;
         }
 
@@ -35,7 +35,7 @@ namespace CTS_System6.Models.Repositories
             return projects;
         }
 
-        public void Update(int id, Projects newProject)
+        public void Update(string id, Projects newProject)
         {
             var project = Find(id);
             project.FromLanguage = newProject.FromLanguage;

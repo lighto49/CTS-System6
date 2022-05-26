@@ -9,12 +9,12 @@ namespace CTS_System6.Models.Repositories
     {
         IList<TEntity> List();
 
-        TEntity Find(int id);
+        TEntity Find(string id);
 
         void Add(TEntity entity);
 
-        void Update(int id, TEntity entity);
-        void Delete(int id);
+        void Update(string id, TEntity entity);
+        void Delete(string id);
 
     }
 }

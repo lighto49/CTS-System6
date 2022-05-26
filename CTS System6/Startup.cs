@@ -48,6 +48,7 @@ namespace CTS_System6
             services.AddControllersWithViews();
 
             services.AddSingleton<ITranslatorRepository<Projects>, ProjectRepository>();
+            services.AddSingleton<ITranslatorRepository<TranslatorsLanguages>, TranslatorsLanguagesRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
