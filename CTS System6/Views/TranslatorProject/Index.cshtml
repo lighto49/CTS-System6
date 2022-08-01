@@ -1,34 +1,18 @@
-﻿@model IEnumerable<CTS_System6.Models.Projects>
+﻿@model IEnumerable<CTS_System6.ViewModels.TranslatorProjectVM>
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Projects</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CustomerId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FromLanguage)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ToLanguage)
-            </th>
+
             <th>
                 @Html.DisplayNameFor(model => model.Subject)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Body)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Status)
@@ -45,29 +29,25 @@
             <th>
                 @Html.DisplayNameFor(model => model.PostDate)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FromLanguageName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ToLanguageName)
+            </th>
+            <th>
+                Customer Name
+            </th>
+
             <th></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CustomerId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FromLanguage)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ToLanguage)
-            </td>
+
             <td>
                 @Html.DisplayFor(modelItem => item.Subject)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Body)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Status)
@@ -85,9 +65,17 @@
                 @Html.DisplayFor(modelItem => item.PostDate)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /*id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new {  id=item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                @Html.DisplayFor(modelItem => item.FromLanguageName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ToLanguageName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CustomerFirstName) @Html.DisplayFor(modelItem => item.CustomerLastName)
+            </td>
+
+            <td>
+                <a asp-action="Bid" asp-route-id="@item.Id">Bid</a> |
             </td>
         </tr>
 }

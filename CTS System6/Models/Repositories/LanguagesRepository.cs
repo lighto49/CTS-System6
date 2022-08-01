@@ -1,4 +1,5 @@
-﻿using CTS_System6.Data.Migrations;
+﻿using CTS_System6.Data;
+//using CTS_System6.Data.Migrations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +9,8 @@ namespace CTS_System6.Models.Repositories
 {
     public class LanguagesRepository : ITranslatorRepository<Languages>
     {
-        TranslatorAppDbContext db;
-        public LanguagesRepository(TranslatorAppDbContext _db)
+        ApplicationDbContext db;
+        public LanguagesRepository(ApplicationDbContext _db)
         {
             db = _db;
         }
@@ -36,6 +37,11 @@ namespace CTS_System6.Models.Repositories
         public IList<Languages> List()
         {
             return db.Languages.ToList();
+        }
+
+        public IList<Languages> List(string id)
+        {
+            throw new NotImplementedException();
         }
 
         public void Update(string id, Languages newLanguage)

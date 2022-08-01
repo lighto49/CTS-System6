@@ -7,7 +7,9 @@ namespace CTS_System6.Models.Repositories
 {
     public interface ITranslatorRepository<TEntity>
     {
+
         IList<TEntity> List();
+        IList<TEntity> List(string id);
 
         TEntity Find(string id);
 

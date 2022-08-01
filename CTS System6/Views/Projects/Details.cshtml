@@ -1,0 +1,54 @@
+﻿@model CTS_System6.ViewModels.CustomerProjectVM
+
+@{
+    ViewData["Title"] = "Project";
+}
+
+<h1>Project</h1>
+
+<div>
+    <h4>Project information</h4>
+    @foreach (var item in Model.pp) {
+    <table class="table table-striped mt-4">
+        <thead>
+            <tr class="bg-primary text-white">
+                <th>Customer Name</th>
+                <th>Subject</th>
+                <th>Body</th>
+                <th>Status</th>
+                <th>Currency</th>
+                <th>Offer</th>
+                <th>Delivery Date</th>
+                <th>Start Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@item.ApplicationUser.FirstName</td>
+                <td>@item.Subject</td>
+                <td>@item.Body</td>
+                <td>@item.Status</td>
+                <td>@item.Currency</td>
+                <td>@item.Offer</td>
+                <td>@item.DeliveryDate</td>
+                <td>@item.PostDate</td>
+            </tr>
+        </tbody>
+    </table>
+    }
+
+    <h4>Bids</h4>
+    <ul>
+        @foreach(var item in Model.cc)
+            {
+                <li>
+                    @item.BBody 
+                    @item.BCurrency 
+                    @item.BOffer 
+                </li>
+            }
+    </ul>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>  

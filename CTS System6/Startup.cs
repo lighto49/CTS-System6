@@ -1,5 +1,5 @@
 using CTS_System6.Data;
-using CTS_System6.Data.Migrations;
+//using CTS_System6.Data.Migrations;
 using CTS_System6.Models;
 using CTS_System6.Models.Repositories;
 using Microsoft.AspNetCore.Builder;
@@ -34,9 +34,9 @@ namespace CTS_System6
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddDbContext<TranslatorAppDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+            //services.AddDbContext<TranslatorAppDbContext>(options =>
+            //    options.UseSqlServer(
+            //        Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 

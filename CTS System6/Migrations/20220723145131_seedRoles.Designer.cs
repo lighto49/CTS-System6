@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace CTS_System6.Data.Migrations
+namespace CTS_System6.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220510184058_AddNewColumnsToUserTable")]
-    partial class AddNewColumnsToUserTable
+    [Migration("20220723145131_seedRoles")]
+    partial class seedRoles
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,35 @@ namespace CTS_System6.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.16")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("CTS_System6.Data.Rate", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CommunicationScale")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DeliveryScale")
+                        .HasColumnType("int");
+
+                    b.Property<int>("QualityScale")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("RateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Rate");
+                });
 
             modelBuilder.Entity("CTS_System6.Models.ApplicationUser", b =>
                 {
@@ -102,6 +131,126 @@ namespace CTS_System6.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("CTS_System6.Models.Bids", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Body")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Currency")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<float>("Offer")
+                        .HasColumnType("real");
+
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TranslatorId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.HasIndex("TranslatorId");
+
+                    b.ToTable("Bids");
+                });
+
+            modelBuilder.Entity("CTS_System6.Models.Languages", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Languages");
+                });
+
+            modelBuilder.Entity("CTS_System6.Models.Projects", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Body")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Currency")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CustomerId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("DeliveryDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("FromLanguage")
+                        .HasColumnType("int");
+
+                    b.Property<float>("Offer")
+                        .HasColumnType("real");
+
+                    b.Property<DateTime>("PostDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Subject")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ToLanguage")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("ToLanguage");
+
+                    b.ToTable("Projects");
+                });
+
+            modelBuilder.Entity("CTS_System6.Models.TranslatorsLanguages", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("FromLanguage")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ToLanguage")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TranslatorId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ToLanguage");
+
+                    b.HasIndex("TranslatorId");
+
+                    b.ToTable("TranslatorsLanguages");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -235,6 +384,66 @@ namespace CTS_System6.Data.Migrations
                     b.ToTable("UserTokens");
                 });
 
+            modelBuilder.Entity("CTS_System6.Data.Rate", b =>
+                {
+                    b.HasOne("CTS_System6.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany("RateList")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("ApplicationUser");
+                });
+
+            modelBuilder.Entity("CTS_System6.Models.Bids", b =>
+                {
+                    b.HasOne("CTS_System6.Models.Projects", "Projects")
+                        .WithMany("BidsList")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CTS_System6.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany("BidsList")
+                        .HasForeignKey("TranslatorId");
+
+                    b.Navigation("ApplicationUser");
+
+                    b.Navigation("Projects");
+                });
+
+            modelBuilder.Entity("CTS_System6.Models.Projects", b =>
+                {
+                    b.HasOne("CTS_System6.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany("ProjectsList")
+                        .HasForeignKey("CustomerId");
+
+                    b.HasOne("CTS_System6.Models.Languages", "Languages")
+                        .WithMany("ProjectsList")
+                        .HasForeignKey("ToLanguage")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ApplicationUser");
+
+                    b.Navigation("Languages");
+                });
+
+            modelBuilder.Entity("CTS_System6.Models.TranslatorsLanguages", b =>
+                {
+                    b.HasOne("CTS_System6.Models.Languages", "Languages")
+                        .WithMany("TranslatorsLanguagesList")
+                        .HasForeignKey("ToLanguage")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CTS_System6.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany("TranslatorLanguagesList")
+                        .HasForeignKey("TranslatorId");
+
+                    b.Navigation("ApplicationUser");
+
+                    b.Navigation("Languages");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -284,6 +493,29 @@ namespace CTS_System6.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("CTS_System6.Models.ApplicationUser", b =>
+                {
+                    b.Navigation("BidsList");
+
+                    b.Navigation("ProjectsList");
+
+                    b.Navigation("RateList");
+
+                    b.Navigation("TranslatorLanguagesList");
+                });
+
+            modelBuilder.Entity("CTS_System6.Models.Languages", b =>
+                {
+                    b.Navigation("ProjectsList");
+
+                    b.Navigation("TranslatorsLanguagesList");
+                });
+
+            modelBuilder.Entity("CTS_System6.Models.Projects", b =>
+                {
+                    b.Navigation("BidsList");
                 });
 #pragma warning restore 612, 618
         }

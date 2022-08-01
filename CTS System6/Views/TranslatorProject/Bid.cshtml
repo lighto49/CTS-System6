@@ -1,0 +1,135 @@
+﻿@model CTS_System6.ViewModels.TranslatorProjectVM
+
+@{
+    ViewData["Title"] = "Bid";
+}
+
+<h1>Bid</h1>
+
+<div>
+    <h4>TranslatorProjectVM</h4>
+    <hr />
+    <dl class="row">
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Subject)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Subject)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Body)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Body)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Currency)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Currency)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Offer)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Offer)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DeliveryDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DeliveryDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PostDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PostDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FromLanguageName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FromLanguageName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ToLanguageName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ToLanguageName)
+        </dd>
+        <dt class="col-sm-2">
+            Customer Name
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CustomerFirstName)  @Html.DisplayFor(model => model.CustomerLastName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BidsCount)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.BidsCount)
+        </dd>
+    </dl>
+
+    @if (Model.BidStatus == 0)
+    {
+        <form asp-action="Bid" method="post">
+            <h4>Bid for this project.</h4>
+
+            <div class="form-group">
+                <label>Comment</label>
+                <input asp-for="BBody" class="form-control" maxlength="100" />
+                <span asp-validation-for="BBody" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label>Offer</label>
+                <input asp-for="BOffer" class="form-control" maxlength="100" />
+                <span asp-validation-for="BOffer" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label>Currency</label>
+                <input asp-for="BCurrency" class="form-control" maxlength="100" />
+                <span asp-validation-for="BCurrency" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary d-block mt-4">Bid</button>
+            <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+
+        </form>
+    }
+
+    else
+    {
+
+        <dl class="row">
+            <dt class="col-sm-2">
+                Comment
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.BBody)
+            </dd>
+            <dt class="col-sm-2">
+                Offer
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.BOffer)
+            </dd>
+            <dt class="col-sm-2">
+                Currency
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.BCurrency)
+            </dd>
+        </dl>
+    }
+
+    <a asp-action="Index" class="btn btn-secondary">Back</a>
+</div>

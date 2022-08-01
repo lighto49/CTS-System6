@@ -6,22 +6,32 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CTS_System6.Controllers
 {
+
+    [Authorize(Roles = "Translator, Customer")]
     public class TranslatorLanguagesController : Controller
     {
         private readonly ITranslatorRepository<TranslatorsLanguages> translatorRepository;
+       // private readonly UserManager<ApplicationUser> _userManager;
+
 
         public TranslatorLanguagesController(ITranslatorRepository<TranslatorsLanguages> translatorRepository)
         {
             this.translatorRepository = translatorRepository;
+         //   _userManager = userManager;
+
         }
 
         // GET: TranslatorLanguagesController
         public ActionResult Index()
         {
-            var languages = translatorRepository.List();
+            var userid = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var languages = translatorRepository.List(userid);
             return View(languages);
         }
 
@@ -36,6 +46,9 @@ namespace CTS_System6.Controllers
         // GET: TranslatorLanguagesController/Create
         public ActionResult Create()
         {
+            var translatorid = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            ViewBag.TID = translatorid;
             return View();
         }
 
@@ -47,12 +60,13 @@ namespace CTS_System6.Controllers
             try
             {
                 translatorRepository.Add(language);
-                return RedirectToAction(nameof(Index));
             }
-            catch
+            catch(Exception e)
             {
+                ModelState.AddModelError(string.Empty, e.Message);
                 return View();
             }
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: TranslatorLanguagesController/Edit/5
