@@ -35,8 +35,8 @@ namespace CTS_System6.Controllers
         // GET: ProjectsController1/Details/5
         public ActionResult Details(int id)
         {
-            List<Projects> projects = db.Projects.ToList();
-            List<Languages> languages = db.Languages.ToList();
+            //List<Projects> projects = db.Projects.ToList();
+            //List<Languages> languages = db.Languages.ToList();
             List<ApplicationUser> users = db.Users.ToList();
             List<Bids> bids = db.Bids.ToList();
             var countquery = from a in bids
@@ -88,7 +88,8 @@ namespace CTS_System6.Controllers
 
                 pp = project1,
                 //bb = bids1,
-                cc = bidsinfo1
+                cc = bidsinfo1,
+                BidsCount = count.ToString()
             };
 
             return View(model);
@@ -98,7 +99,7 @@ namespace CTS_System6.Controllers
         public ActionResult Create()
         {
             var CustomerId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-
+            ViewBag.PS = "Available";
             ViewBag.CID = CustomerId;
             return View();
         }
