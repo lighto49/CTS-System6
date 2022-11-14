@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace CTS_System6.Controllers
 {
-    [Authorize(Roles = "Admin")]
+  //  [Authorize(Roles = "Admin")]
     public class LanguagesController : Controller
     {
         private readonly ITranslatorRepository<Languages> languagesRepository;

@@ -2,6 +2,7 @@
 using CTS_System6.Models;
 using CTS_System6.Models.Repositories;
 using CTS_System6.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -12,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace CTS_System6.Controllers
 {
+    //[Authorize(Roles = "Customer")]
     public class ProjectsController : Controller
     {
         private readonly ITranslatorRepository<Projects> projectRepository;

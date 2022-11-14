@@ -1,6 +1,7 @@
 ﻿using CTS_System6.Data;
 using CTS_System6.Models;
 using CTS_System6.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace CTS_System6.Controllers
 {
+    [Authorize(Roles = "Translator")]
     public class TranslatorProjectController : Controller
     {
 
@@ -61,12 +63,12 @@ namespace CTS_System6.Controllers
             List<Bids> bids = db.Bids.ToList();
 
             var userid = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var bidstatus = db.Bids.Count(b => b.TranslatorId == userid);
+            //var bidstatus = db.Bids.Count(b => b.TranslatorId == userid);
             var countquery = from a in bids
                              where a.ProjectId == id
                              select a.TranslatorId;
             var count = countquery.Count();
-            var bidinfo = db.Bids.Where(a => a.TranslatorId == userid).Select(a => new { a.Body, a.Currency, a.Offer }).SingleOrDefault();
+            var bidinfo = db.Bids.Where(a => a.TranslatorId == userid && a.ProjectId == id).Select(a => new { a.Body, a.Currency, a.Offer }).SingleOrDefault();
             var TranslatorProject = new TranslatorProjectVM();
             if (bidinfo == null) {
                 TranslatorProject = (from a in projects
@@ -89,7 +91,7 @@ namespace CTS_System6.Controllers
                                              CustomerFirstName = d.FirstName,
                                              CustomerLastName = d.LastName,
                                              BidsCount = count.ToString(),
-                                             BidStatus = bidstatus
+                                             BidStatus = 0
                                          }).FirstOrDefault();
             }
             else
@@ -114,10 +116,10 @@ namespace CTS_System6.Controllers
                                              CustomerFirstName = d.FirstName,
                                              CustomerLastName = d.LastName,
                                              BidsCount = count.ToString(),
-                                             BidStatus = bidstatus,
+                                             BidStatus = 1,
                                              BBody = bidinfo.Body,
                                              BCurrency = bidinfo.Currency,
-                                             BOffer = bidinfo.Offer 
+                                             BOffer = bidinfo.Offer
                                          }).FirstOrDefault();
             }
             
