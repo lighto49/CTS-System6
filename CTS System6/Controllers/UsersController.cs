@@ -30,11 +30,26 @@ namespace CTS_System6.Controllers
                 Id = user.Id,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                Email = user.Email
+                Email = user.Email,
+                Status = user.Status
             }).ToListAsync();
 
 
             return View(users);
+        }
+
+        //[HttpPost]
+        public async Task<IActionResult> Change(string userid)
+        {
+
+            var user = await _userManager.FindByIdAsync(userid);
+
+            user.Status = !user.Status;
+
+            await _userManager.UpdateAsync(user);
+
+            return RedirectToAction(nameof(Index));
+
         }
 
         public async Task<IActionResult> Add()

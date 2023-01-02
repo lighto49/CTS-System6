@@ -50,6 +50,9 @@ namespace CTS_System6
             services.AddScoped<ITranslatorRepository<Projects>, ProjectRepository>();
             services.AddScoped<ITranslatorRepository<TranslatorsLanguages>, TranslatorsLanguagesRepository>();
             services.AddScoped<ITranslatorRepository<Languages>, LanguagesRepository>();
+            services.AddScoped<ITranslatorRepository<Rate>, RateRepository>();
+            services.AddScoped<ITranslatorRepository<Message>, MessageRepository>();
+            services.AddScoped<ITranslatorRepository<ChatRoom>, ChatRoomRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

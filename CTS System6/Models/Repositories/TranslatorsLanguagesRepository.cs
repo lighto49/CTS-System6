@@ -63,5 +63,11 @@ namespace CTS_System6.Models.Repositories
 
 
         }
+
+
+        public void UpdateElement(string elementId, string elementName, string newValue)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

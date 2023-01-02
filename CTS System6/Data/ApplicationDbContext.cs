@@ -70,10 +70,6 @@ namespace CTS_System6.Data
                 .WithMany(b => b.ProjectsList)
                 .HasForeignKey(b => b.ToLanguage);
 
-            builder.Entity<Rate>()
-                .HasOne(p => p.ApplicationUser)
-                .WithMany(b => b.RateList)
-                .HasForeignKey(b => b.UserId);
 
             builder.Entity<Bids>()
                 .HasOne(p => p.ApplicationUser)
@@ -84,6 +80,24 @@ namespace CTS_System6.Data
                 .HasOne(p => p.Projects)
                 .WithMany(b => b.BidsList)
                 .HasForeignKey(b => b.ProjectId);
+
+            builder.Entity<ChatRoom>()
+                .HasOne(c => c.UserA)
+                .WithMany(c => c.UserAChatRoom)
+                .HasForeignKey(c => c.UserAId);
+            builder.Entity<ChatRoom>()
+                .HasOne(c => c.UserB)
+                .WithMany(c => c.UserBChatRoom)
+                .HasForeignKey(c => c.UserBId);
+            builder.Entity<ChatRoom>()
+                .HasKey(c => c.Id);
+            builder.Entity<Message>()
+                .HasKey(m => m.Id);
+            builder.Entity<Message>()
+                .HasOne(m => m.ChatRoom)
+                .WithMany(m => m.Messages)
+                .HasForeignKey(m => m.ChatRoomId);
+
         }
 
 
@@ -92,7 +106,9 @@ namespace CTS_System6.Data
         public DbSet<Rate> Rate { get; set; }
         public DbSet<TranslatorsLanguages> TranslatorsLanguages { get; set; }
         public DbSet<Bids> Bids { get; set; }
-        public DbSet<CTS_System6.ViewModels.TranslatorProjectVM> TranslatorProjectVM { get; set; }
+        public DbSet<ChatRoom> ChatRooms { get; set; }
+        public DbSet<Message> Messages { get; set; }
+
 
 
     }

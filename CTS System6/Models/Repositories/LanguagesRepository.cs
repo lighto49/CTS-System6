@@ -49,5 +49,10 @@ namespace CTS_System6.Models.Repositories
             db.Update(newLanguage);
             db.SaveChanges();
         }
+
+        public void UpdateElement(string elementId, string elementName, string newValue)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

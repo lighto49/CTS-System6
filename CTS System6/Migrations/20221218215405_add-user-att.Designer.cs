@@ -4,14 +4,16 @@ using CTS_System6.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CTS_System6.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221218215405_add-user-att")]
+    partial class adduseratt
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -184,34 +186,6 @@ namespace CTS_System6.Migrations
                     b.ToTable("Bids");
                 });
 
-            modelBuilder.Entity("CTS_System6.Models.ChatRoom", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserAId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("UserBId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserAId");
-
-                    b.HasIndex("UserBId");
-
-                    b.ToTable("ChatRooms");
-                });
-
             modelBuilder.Entity("CTS_System6.Models.Languages", b =>
                 {
                     b.Property<int>("Id")
@@ -225,32 +199,6 @@ namespace CTS_System6.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Languages");
-                });
-
-            modelBuilder.Entity("CTS_System6.Models.Message", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("ChatRoomId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("SendDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Text")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ChatRoomId");
-
-                    b.ToTable("Messages");
                 });
 
             modelBuilder.Entity("CTS_System6.Models.Projects", b =>
@@ -486,32 +434,6 @@ namespace CTS_System6.Migrations
                     b.Navigation("Projects");
                 });
 
-            modelBuilder.Entity("CTS_System6.Models.ChatRoom", b =>
-                {
-                    b.HasOne("CTS_System6.Models.ApplicationUser", "UserA")
-                        .WithMany("UserAChatRoom")
-                        .HasForeignKey("UserAId");
-
-                    b.HasOne("CTS_System6.Models.ApplicationUser", "UserB")
-                        .WithMany("UserBChatRoom")
-                        .HasForeignKey("UserBId");
-
-                    b.Navigation("UserA");
-
-                    b.Navigation("UserB");
-                });
-
-            modelBuilder.Entity("CTS_System6.Models.Message", b =>
-                {
-                    b.HasOne("CTS_System6.Models.ChatRoom", "ChatRoom")
-                        .WithMany("Messages")
-                        .HasForeignKey("ChatRoomId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ChatRoom");
-                });
-
             modelBuilder.Entity("CTS_System6.Models.Projects", b =>
                 {
                     b.HasOne("CTS_System6.Models.ApplicationUser", "ApplicationUser")
@@ -604,15 +526,6 @@ namespace CTS_System6.Migrations
                     b.Navigation("ProjectsList");
 
                     b.Navigation("TranslatorLanguagesList");
-
-                    b.Navigation("UserAChatRoom");
-
-                    b.Navigation("UserBChatRoom");
-                });
-
-            modelBuilder.Entity("CTS_System6.Models.ChatRoom", b =>
-                {
-                    b.Navigation("Messages");
                 });
 
             modelBuilder.Entity("CTS_System6.Models.Languages", b =>

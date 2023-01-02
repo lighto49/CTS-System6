@@ -1,78 +1,216 @@
 ﻿@model CTS_System6.ViewModels.CustomerProjectVM
 
+
 @{
     ViewData["Title"] = "Project";
 }
 
 <h1>Project</h1>
 
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="ChangeStatus">
 
-            <div class="form-group">
-                <select class="form-control">
-                    <option>Status</option>
-                </select>
+@if (Model.Status != "Completed")
+{
+<div class="card">
+    <div class="card-header">Project's Workflow:</div>
+    <form asp-action="ChangeStatus">
+        <input type="hidden" asp-for="Id" value="@Model.Id" />
+        <div class="card-body">
+
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label>Change Status</label>
+                        <select asp-for="Status" class="form-control" asp-items="ViewBag.StatusList">
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Select Translator</label>
+                        <select asp-for="SelectedTranslator" class="form-control" asp-items="ViewBag.TranslatorList">
+                            <option>Select Translator</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <div class="form-group">
+                        <label>Review</label>
+                        <textarea class="form-control" id="reviewTextArea" rows="2" asp-for="Review"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <div>
+                            <label>Delivery Scale:</label>
+                            <span class="DScale-Span text-warning float-right">
+                                <i class="rating-D-stars fa-solid fa-star" data-value="1"></i>
+                                <i class="rating-D-stars fa-regular fa-star" data-value="2"></i>
+                                <i class="rating-D-stars fa-regular fa-star" data-value="3"></i>
+                                <i class="rating-D-stars fa-regular fa-star" data-value="4"></i>
+                                <i class="rating-D-stars fa-regular fa-star" data-value="5"></i>
+                            </span>
+                            <input type="hidden" asp-for="DeliveryScale" id="DSVal" value="1" />
+                        </div>
+                        <div>
+                            <label>Communication Scale:</label>
+                            <span class="CScale-Span text-warning float-right">
+                                <i class="rating-C-stars fa-solid fa-star" data-value="1"></i>
+                                <i class="rating-C-stars fa-regular fa-star" data-value="2"></i>
+                                <i class="rating-C-stars fa-regular fa-star" data-value="3"></i>
+                                <i class="rating-C-stars fa-regular fa-star" data-value="4"></i>
+                                <i class="rating-C-stars fa-regular fa-star" data-value="5"></i>
+                            </span>
+                            <input type="hidden" asp-for="CommunicationScale" id="CSVal" value="1" />
+                        </div>
+                        <div>
+                            <label>Quality Scale:</label>
+                            <span class="QScale-Span text-warning float-right">
+                                <i class="rating-Q-stars fa-solid fa-star" data-value="1"></i>
+                                <i class="rating-Q-stars fa-regular fa-star" data-value="2"></i>
+                                <i class="rating-Q-stars fa-regular fa-star" data-value="3"></i>
+                                <i class="rating-Q-stars fa-regular fa-star" data-value="4"></i>
+                                <i class="rating-Q-stars fa-regular fa-star" data-value="5"></i>
+                            </span>
+                            <input type="hidden" asp-for="QualityScale" id="QSVal" value="1" />
+                        </div>
+                    </div>
+                </div>
+
             </div>
-            <div class="form-group">
-                <select class="form-control">
-                    <option>Select Translator</option>
-                </select>
-            </div>
-            <div class="form-group">
+        </div>
+
+        <div class="card-footer">
                 <input type="submit" value="Save" class="btn btn-primary" />
+        </div>
+    </form>
+</div>
+}
+else
+{
+<div class="card">
+    <div class="card-header">Project has been completed!!</div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-5">
+                <div class="form-group">
+                    <label>Status: @Model.Status</label>
+                </div>
+                <div class="form-group">
+                    <label>Translator: @Model.SelectedTranslator</label>
+                </div>
             </div>
-        </form>
+            <div class="col-md-7">
+                <div class="form-group">
+                    <label>Review: @Model.Review</label>
+                </div>
+                <div class="form-group">
+                    <div>
+                        <label>Delivery Scale:</label>
+                        <span class="text-warning float-right">
+                            @for (int i = 1; i <= 5; i++)
+                            {
+                                if (i <= Model.DeliveryScale)
+                                {
+                                    <i class="fa-solid fa-star"></i>
+
+                                }
+                                else
+                                {
+                                    <i class="fa-regular fa-star"></i>
+
+                                }
+                            }
+                        </span>
+                    </div>
+                    <div>
+                        <label>Communication Scale:</label>
+                        <span class="text-warning float-right">
+                            @for (int i = 1; i <= 5; i++)
+                            {
+                                if (i <= Model.CommunicationScale)
+                                {
+                                    <i class="fa-solid fa-star"></i>
+
+                                }
+                                else
+                                {
+                                    <i class="fa-regular fa-star"></i>
+
+                                }
+                            }
+                        </span>
+                    </div>
+                    <div>
+                        <label>Quality Scale:</label>
+                        <span class="text-warning float-right">
+                            @for (int i = 1; i <= 5; i++)
+                            {
+                                if (i <= Model.QualityScale)
+                                {
+                                    <i class="fa-solid fa-star"></i>
+
+                                }
+                                else
+                                {
+                                    <i class="fa-regular fa-star"></i>
+
+                                }
+                            }
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+}
 
-        <div>
-            <h4>Project information</h4>
-            @foreach (var item in Model.pp)
-            {
-                <table class="table table-striped mt-4">
-                    <thead>
-                        <tr class="bg-primary text-white">
-                            <th>Customer Name</th>
-                            <th>Subject</th>
-                            <th>Body</th>
-                            <th>Status</th>
-                            <th>Currency</th>
-                            <th>Offer</th>
-                            <th>Delivery Date</th>
-                            <th>Start Date</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>@item.ApplicationUser.FirstName</td>
-                            <td>@item.Subject</td>
-                            <td>@item.Body</td>
-                            <td>@item.Status</td>
-                            <td>@item.Currency</td>
-                            <td>@item.Offer</td>
-                            <td>@item.DeliveryDate</td>
-                            <td>@item.PostDate</td>
-                        </tr>
-                    </tbody>
-                </table>
-            }
 
-            <label>Bid Counts:</label> @Model.BidsCount
 
-            <h4>Bids</h4>
-            <ul>
-                @foreach (var item in Model.cc)
-                {
-                    <li>
-                        @item.BBody
-                        @item.BCurrency
-                        @item.BOffer
-                    </li>
-                }
-            </ul>
-        </div>
-        <div>
-            <a asp-action="Index">Back to List</a>
-        </div>
+<div>
+    <h4>Project information</h4>
+    @foreach (var item in Model.pp)
+    {
+        <table class="table table-striped mt-4">
+            <thead>
+                <tr class="bg-primary text-white">
+                    <th>Customer Name</th>
+                    <th>Subject</th>
+                    <th>Body</th>
+                    <th>Status</th>
+                    <th>Currency</th>
+                    <th>Offer</th>
+                    <th>Delivery Date</th>
+                    <th>Start Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>@item.ApplicationUser.FirstName</td>
+                    <td>@item.Subject</td>
+                    <td>@item.Body</td>
+                    <td>@item.Status</td>
+                    <td>@item.Currency</td>
+                    <td>@item.Offer</td>
+                    <td>@item.DeliveryDate</td>
+                    <td>@item.PostDate</td>
+                </tr>
+            </tbody>
+        </table>
+    }
+
+    <label>Bid Counts:</label> @Model.BidsCount
+
+    <h4>Bids</h4>
+    <ul>
+        @foreach (var item in Model.cc)
+        {
+        <li onclick="ViewProfile('@item.TranslatorId')">
+            @await Component.InvokeAsync("ProfileIcon", new { UserId = item.TranslatorId })
+            @item.BBody
+            @item.BCurrency
+            @item.BOffer
+        </li>
+        }
+    </ul>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

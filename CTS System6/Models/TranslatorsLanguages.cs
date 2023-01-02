@@ -16,7 +16,7 @@ namespace CTS_System6.Models
 
         //[ForeignKey("TranslatorId")]
         public ApplicationUser ApplicationUser { get; set; }
-        //[ForeignKey("FromLanguage, ToLanguage")]
+        [ForeignKey("FromLanguage, ToLanguage")]
         public Languages Languages { get; set; }
     }
 }

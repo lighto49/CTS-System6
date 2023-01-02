@@ -1,0 +1,105 @@
+﻿@model CTS_System6.ViewModels.UserProfileVM
+
+
+@{
+    ViewData["Title"] = "User Profile";
+}
+
+<h1>User Profile</h1>
+
+@foreach (var item in Model.UserInfo)
+{
+    <div>
+
+        <img class="avatar rounded-circle" alt="profile" src="data:image/*;base64,@(Convert.ToBase64String(item.ProfilePictuer))" />
+
+    </div>
+    <div>
+        <label>@item.FirstName @item.LastName</label>
+    </div>
+    <div>
+        <span class="text-warning">
+            @for (int i = 1; i <= 5; i++)
+            {
+                if (i <= item.Rate)
+                {
+                    <i class="fa-solid fa-star"></i>
+
+                }
+                else
+                {
+                    <i class="fa-regular fa-star"></i>
+
+                }
+            }
+        </span>
+    </div>
+
+<div>
+    <label>Posted Projects: @Model.ProjectsCount</label>
+    <label>Accomplished Projects: @Model.AccomplishedProjects</label>   
+</div>
+}
+
+<div>
+    <label>Statistics:</label>
+
+</div>
+
+<div>
+    <label>Reviews:</label>
+    @foreach (var review in Model.RateList) {
+    <div>
+    @review.Review
+
+    <label>Communication Scale:</label>
+    <span class="text-warning">
+        @for (int i = 1; i <= 5; i++)
+        {
+            if (i <= review.CommunicationScale)
+            {
+                <i class="fa-solid fa-star"></i>
+
+            }
+            else
+            {
+                <i class="fa-regular fa-star"></i>
+
+            }
+        }
+    </span>
+    <label>Quality Scale:</label>
+    <span class="text-warning">
+        @for (int i = 1; i <= 5; i++)
+        {
+            if (i <= review.QualityScale)
+            {
+                <i class="fa-solid fa-star"></i>
+
+            }
+            else
+            {
+                <i class="fa-regular fa-star"></i>
+
+            }
+        }
+    </span>
+    <label>Delivery Scale:</label>
+    <span class="text-warning">
+        @for (int i = 1; i <= 5; i++)
+        {
+            if (i <= review.DeliveryScale)
+            {
+                <i class="fa-solid fa-star"></i>
+
+            }
+            else
+            {
+                <i class="fa-regular fa-star"></i>
+
+            }
+        }
+    </span>
+     </div>
+    }
+</div>

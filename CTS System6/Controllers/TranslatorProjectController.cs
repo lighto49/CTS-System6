@@ -39,6 +39,7 @@ namespace CTS_System6.Controllers
                                     where  e.TranslatorId == userid
                                     select new TranslatorProjectVM
                                     {
+                                        CustomerId = d.Id,
                                         Id = a.Id,
                                         Subject = a.Subject,
                                         Status = a.Status,
@@ -79,6 +80,7 @@ namespace CTS_System6.Controllers
                                          select new TranslatorProjectVM
                                          {
                                              Id = a.Id,
+                                             CustomerId = a.CustomerId,
                                              Subject = a.Subject,
                                              Body = a.Body,
                                              Status = a.Status,
@@ -104,6 +106,7 @@ namespace CTS_System6.Controllers
                                          select new TranslatorProjectVM
                                          {
                                              Id = a.Id,
+                                             CustomerId = a.CustomerId,
                                              Subject = a.Subject,
                                              Body = a.Body,
                                              Status = a.Status,

@@ -52,6 +52,11 @@ namespace CTS_System6.Areas.Identity.Pages.Account
             [Display(Name = "User Type")]
             public string UserType { get; set; }
 
+
+            [Display(Name = "User Name")]
+            [StringLength(20, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 4)]
+            public string UserName { get; set; }
+
             [Required]
             [Display(Name = "First Name")]
             public string FirstName { get; set; }
@@ -102,13 +107,15 @@ namespace CTS_System6.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser {
-                    
-                    UserName = Input.Email,
+
+                    UserName = Input.UserName,
                     Email = Input.Email,
                     FirstName = Input.FirstName,
                     LastName = Input.LastName,
                     PhoneNumber = Input.PhoneNumber,
-                    Country = Input.Country
+                    Country = Input.Country,
+                    Status = false,
+                    RegestratioDate = DateTime.Now
                 };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
@@ -132,8 +139,9 @@ namespace CTS_System6.Areas.Identity.Pages.Account
                     }
                     else
                     {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl);
+                        //await _signInManager.SignInAsync(user, isPersistent: false);
+                        //return LocalRedirect(returnUrl);
+                        return RedirectToPage(pageName: "WaitingActivision");
                     }
                 }
                 foreach (var error in result.Errors)

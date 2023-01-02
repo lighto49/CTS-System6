@@ -58,5 +58,25 @@ namespace CTS_System6.Models.Repositories
             //project.Subject = newProject.Subject;
            
         }
+
+
+        public void UpdateElement(string elementId, string elementName, string newValue)
+        {
+
+
+            //db.Projects.Where(p => p.Id == Convert.ToInt32(elementId)).
+            var project = Find(elementId);
+            switch(elementName)
+            {
+                case "Status":
+                    project.Status = newValue;
+                    break;
+                case "SelectedTranslator":
+                    project.SelectedTranslator = newValue;
+                    break;
+            };
+
+            db.SaveChanges();
+          }
     }
 }

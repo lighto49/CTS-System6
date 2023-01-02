@@ -11,6 +11,7 @@ namespace CTS_System6.ViewModels
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
+        public bool Status { get; set; }
         public List<RoleViewModel> Roles { get; set; }
     }
 }

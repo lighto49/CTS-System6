@@ -1,0 +1,23 @@
+﻿@model CTS_System6.Models.ApplicationUser
+
+<img class="avatar rounded-circle" alt="profile" src="data:image/*;base64,@(Convert.ToBase64String(Model.ProfilePictuer))" />
+<div>
+    <label>@Model.FirstName @Model.LastName</label>
+</div>
+<div>
+    <span class="text-warning">
+        @for (int i = 1; i <= 5; i++)
+        {
+            if (i <= Model.Rate)
+            {
+                <i class="fa-solid fa-star"></i>
+
+            }
+            else
+            {
+                <i class="fa-regular fa-star"></i>
+
+            }
+        }
+    </span>
+</div>

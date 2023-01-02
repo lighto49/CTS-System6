@@ -38,6 +38,11 @@ namespace CTS_System6.ViewModels
         public string TranslatorFirstName { get; set; }
         public string TranslatorLastName { get; set; }
         public int BidStatus { get; set; }
+        public string TranslatorId { get; set; }
+
+        //Workflow attributes
+        public string SelectedTranslator { get; set; }
+
 
 
     }

@@ -4,14 +4,16 @@ using CTS_System6.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CTS_System6.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221114055446_WF1")]
+    partial class WF1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,13 +31,7 @@ namespace CTS_System6.Migrations
                     b.Property<int>("CommunicationScale")
                         .HasColumnType("int");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("DeliveryScale")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProjectId")
                         .HasColumnType("int");
 
                     b.Property<int>("QualityScale")
@@ -44,16 +40,12 @@ namespace CTS_System6.Migrations
                     b.Property<DateTime>("RateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Review")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProjectId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Rate");
                 });
@@ -118,17 +110,8 @@ namespace CTS_System6.Migrations
                     b.Property<float>("Rate")
                         .HasColumnType("real");
 
-                    b.Property<DateTime>("RegestratioDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("StatusDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
@@ -184,34 +167,6 @@ namespace CTS_System6.Migrations
                     b.ToTable("Bids");
                 });
 
-            modelBuilder.Entity("CTS_System6.Models.ChatRoom", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserAId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("UserBId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserAId");
-
-                    b.HasIndex("UserBId");
-
-                    b.ToTable("ChatRooms");
-                });
-
             modelBuilder.Entity("CTS_System6.Models.Languages", b =>
                 {
                     b.Property<int>("Id")
@@ -225,32 +180,6 @@ namespace CTS_System6.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Languages");
-                });
-
-            modelBuilder.Entity("CTS_System6.Models.Message", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("ChatRoomId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("SendDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Text")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ChatRoomId");
-
-                    b.ToTable("Messages");
                 });
 
             modelBuilder.Entity("CTS_System6.Models.Projects", b =>
@@ -325,6 +254,81 @@ namespace CTS_System6.Migrations
                     b.HasIndex("TranslatorId");
 
                     b.ToTable("TranslatorsLanguages");
+                });
+
+            modelBuilder.Entity("CTS_System6.ViewModels.TranslatorProjectVM", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("BBody")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BCurrency")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<float>("BOffer")
+                        .HasColumnType("real");
+
+                    b.Property<int>("BidStatus")
+                        .HasColumnType("int");
+
+                    b.Property<string>("BidsCount")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Body")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Currency")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CustomerFirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CustomerId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CustomerLastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DeliveryDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("FromLanguage")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FromLanguageName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<float>("Offer")
+                        .HasColumnType("real");
+
+                    b.Property<DateTime>("PostDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Subject")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ToLanguage")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ToLanguageName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TranslatorFirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TranslatorLastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TranslatorProjectVM");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -460,13 +464,11 @@ namespace CTS_System6.Migrations
 
             modelBuilder.Entity("CTS_System6.Data.Rate", b =>
                 {
-                    b.HasOne("CTS_System6.Models.Projects", "Project")
-                        .WithMany()
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("CTS_System6.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany("RateList")
+                        .HasForeignKey("UserId");
 
-                    b.Navigation("Project");
+                    b.Navigation("ApplicationUser");
                 });
 
             modelBuilder.Entity("CTS_System6.Models.Bids", b =>
@@ -484,32 +486,6 @@ namespace CTS_System6.Migrations
                     b.Navigation("ApplicationUser");
 
                     b.Navigation("Projects");
-                });
-
-            modelBuilder.Entity("CTS_System6.Models.ChatRoom", b =>
-                {
-                    b.HasOne("CTS_System6.Models.ApplicationUser", "UserA")
-                        .WithMany("UserAChatRoom")
-                        .HasForeignKey("UserAId");
-
-                    b.HasOne("CTS_System6.Models.ApplicationUser", "UserB")
-                        .WithMany("UserBChatRoom")
-                        .HasForeignKey("UserBId");
-
-                    b.Navigation("UserA");
-
-                    b.Navigation("UserB");
-                });
-
-            modelBuilder.Entity("CTS_System6.Models.Message", b =>
-                {
-                    b.HasOne("CTS_System6.Models.ChatRoom", "ChatRoom")
-                        .WithMany("Messages")
-                        .HasForeignKey("ChatRoomId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ChatRoom");
                 });
 
             modelBuilder.Entity("CTS_System6.Models.Projects", b =>
@@ -603,16 +579,9 @@ namespace CTS_System6.Migrations
 
                     b.Navigation("ProjectsList");
 
+                    b.Navigation("RateList");
+
                     b.Navigation("TranslatorLanguagesList");
-
-                    b.Navigation("UserAChatRoom");
-
-                    b.Navigation("UserBChatRoom");
-                });
-
-            modelBuilder.Entity("CTS_System6.Models.ChatRoom", b =>
-                {
-                    b.Navigation("Messages");
                 });
 
             modelBuilder.Entity("CTS_System6.Models.Languages", b =>

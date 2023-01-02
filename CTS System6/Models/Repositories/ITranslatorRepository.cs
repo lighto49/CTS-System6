@@ -18,5 +18,7 @@ namespace CTS_System6.Models.Repositories
         void Update(string id, TEntity entity);
         void Delete(string id);
 
+        void UpdateElement(string elementId,string elementName, string newValue);
+
     }
 }

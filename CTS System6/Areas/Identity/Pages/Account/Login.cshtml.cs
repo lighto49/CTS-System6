@@ -84,6 +84,13 @@ namespace CTS_System6.Areas.Identity.Pages.Account
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                var active = _userManager.Users.Where(u => u.Email == Input.Email).Select(u => u.Status).FirstOrDefault();
+                if(!active)
+                {
+                    //return RedirectToPage("./NotActive");
+                    ModelState.AddModelError(string.Empty, "Your Account still under review!!");
+                    return Page();
+                }
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");

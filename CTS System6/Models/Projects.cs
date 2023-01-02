@@ -21,9 +21,11 @@ namespace CTS_System6.Models
         public DateTime DeliveryDate { get; set; }
         public DateTime PostDate { get; set; }
 
+        public string SelectedTranslator { get; set; }
+
         //[ForeignKey("CustomerId")]
         public ApplicationUser ApplicationUser { get; set; }
-        //[ForeignKey("FromLanguage, ToLanguage")]
+        [ForeignKey("FromLanguage, ToLanguage")]
         public Languages Languages { get; set; }
         public List<Bids> BidsList { get; set; }
 

@@ -16,7 +16,7 @@
             <th>First Name</th>
             <th>Last Name</th>
             <th>Email</th>
-            @*<th>Roles</th>*@
+            <th>Status</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -24,16 +24,25 @@
     <tbody>
         @foreach(var user in Model)
             {
-                <tr>
-                    <td>@user.FirstName</td>
-                    <td>@user.LastName</td>
-                    <td>@user.Email</td>
-                    @*<td>@string.Join(" , ", user.Roles.ToList())</td>*@
-                    <td>
-                        <a class="btn btn-primary" asp-controller="Users" asp-action="ManageRoles" asp-route-userid="@user.Id">Manage Roles</a>
-                        <a class="btn btn-outline-primary" asp-controller="Users" asp-action="Edit" asp-route-userid="@user.Id">Modify Profile</a>
-                    </td>
-                </tr>
+        <tr>
+            <td>@user.FirstName</td>
+            <td>@user.LastName</td>
+            <td>@user.Email</td>
+            @if (user.Status)
+            {
+                <td>Active</td>
+            }
+            else
+            {
+                <td>Not Active</td>
+            }
+        <td>
+            <a class="btn btn-primary" asp-controller="Users" asp-action="ManageRoles" asp-route-userid="@user.Id">Manage Roles</a>
+            <a class="btn btn-outline-primary" asp-controller="Users" asp-action="Edit" asp-route-userid="@user.Id">Modify Profile</a>
+            <a class="btn btn-primary" asp-controller="Users" asp-action="Change" asp-route-userid="@user.Id">Activate/De Activate</a>
+            @*<input type="button" asp-controller="Users" asp-action="Change" asp-route-userid="@user.Id" value="Activate/De Activate" />*@
+        </td>
+        </tr>
             }
     </tbody>
 

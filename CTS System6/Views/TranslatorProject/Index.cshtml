@@ -10,6 +10,9 @@
 <table class="table">
     <thead>
         <tr>
+            <th>
+
+            </th>
 
             <th>
                 @Html.DisplayNameFor(model => model.Subject)
@@ -45,6 +48,9 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
+            <td  onclick="ViewProfile('@item.CustomerId')">
+                @await Component.InvokeAsync("ProfileIcon", new { UserId = item.CustomerId })
+            </td>
 
             <td>
                 @Html.DisplayFor(modelItem => item.Subject)
