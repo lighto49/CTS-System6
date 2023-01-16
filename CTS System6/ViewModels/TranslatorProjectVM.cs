@@ -41,8 +41,10 @@ namespace CTS_System6.ViewModels
         public string TranslatorId { get; set; }
 
         //Workflow attributes
-        public string SelectedTranslator { get; set; }
-
+        public string Review { get; set; }
+        public int DeliveryScale { get; set; }
+        public int QualityScale { get; set; }
+        public int CommunicationScale { get; set; }
 
 
     }

@@ -1,5 +1,6 @@
 ﻿using CTS_System6.Data;
 using CTS_System6.Models;
+using CTS_System6.Models.Repositories;
 using CTS_System6.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,12 +15,16 @@ namespace CTS_System6.Controllers
     [Authorize(Roles = "Translator")]
     public class TranslatorProjectController : Controller
     {
+        private readonly ITranslatorRepository<Rate> rateRepository;
+        private readonly ITranslatorRepository<Projects> projectRepository;
 
         ApplicationDbContext db;
 
-        public TranslatorProjectController(ApplicationDbContext _db)
+        public TranslatorProjectController(ApplicationDbContext _db, ITranslatorRepository<Rate> _rateRepository, ITranslatorRepository<Projects> _projectRepository)
         {
             db = _db;
+            rateRepository = _rateRepository;
+            projectRepository = _projectRepository;
             
         }
 
@@ -71,6 +76,7 @@ namespace CTS_System6.Controllers
             var count = countquery.Count();
             var bidinfo = db.Bids.Where(a => a.TranslatorId == userid && a.ProjectId == id).Select(a => new { a.Body, a.Currency, a.Offer }).SingleOrDefault();
             var TranslatorProject = new TranslatorProjectVM();
+            var rateinfo = db.Rate.Where(r => r.ProjectId == id && r.CreatedBy == userid).SingleOrDefault();
             if (bidinfo == null) {
                 TranslatorProject = (from a in projects
                                          join b in languages on a.FromLanguage equals b.Id
@@ -122,7 +128,11 @@ namespace CTS_System6.Controllers
                                              BidStatus = 1,
                                              BBody = bidinfo.Body,
                                              BCurrency = bidinfo.Currency,
-                                             BOffer = bidinfo.Offer
+                                             BOffer = bidinfo.Offer,
+                                             DeliveryScale = rateinfo.DeliveryScale,
+                                             CommunicationScale = rateinfo.CommunicationScale,
+                                             QualityScale = rateinfo.QualityScale,
+                                             Review = rateinfo.Review
                                          }).FirstOrDefault();
             }
             
@@ -151,6 +161,35 @@ namespace CTS_System6.Controllers
             db.SaveChanges();
 
             return RedirectToAction(nameof(Bid));
+        }
+
+        [HttpPost]
+        public ActionResult Rate(TranslatorProjectVM TPVM)
+        {
+            var id = TPVM.Id;
+            var TranslatorId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var projectAtt = db.Projects.Where(p => p.Id == id).Select(p => new { Status = p.Status, Translator = p.SelectedTranslator, Customer = p.CustomerId }).FirstOrDefault();
+
+            if (projectAtt.Status == "Completed" && projectAtt.Translator == TranslatorId)
+            {
+                var rate = new Rate
+                {
+                    Review = TPVM.Review,
+                    UserId = projectAtt.Customer,
+                    RateDate = DateTime.Now,
+                    CommunicationScale = TPVM.CommunicationScale,
+                    DeliveryScale = TPVM.DeliveryScale,
+                    QualityScale = TPVM.QualityScale,
+                    CreatedBy = TranslatorId,
+                    ProjectId = id
+                };
+
+                projectRepository.UpdateElement(id.ToString(), "Status", "Finally Closed");
+                rateRepository.Add(rate);
+
+            };
+
+            return RedirectToAction("Bid", new { id });
         }
 
     }

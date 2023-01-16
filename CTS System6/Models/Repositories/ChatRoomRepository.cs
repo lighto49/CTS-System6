@@ -37,7 +37,7 @@ namespace CTS_System6.Models.Repositories
 
         public IList<ChatRoom> List(string id)
         {
-            return db.ChatRooms.Where(c => c.UserAId == id).ToList();
+            return db.ChatRooms.Where(c => c.UserAId == id || c.UserBId == id).ToList();
         }
 
         public void Update(string id, ChatRoom newChat)

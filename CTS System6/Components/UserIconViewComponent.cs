@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace CTS_System6.Components
 {
-    public class UserIconViewComponent : ViewComponent
+    public class ProfileIconViewComponent : ViewComponent
     {
 
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public UserIconViewComponent(UserManager<ApplicationUser> userManager)
+        public ProfileIconViewComponent(UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
         }
@@ -26,8 +26,8 @@ namespace CTS_System6.Components
             {
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                UserName = user.UserName,
-                ProfilePictuer = user.ProfilePictuer
+                ProfilePictuer = user.ProfilePictuer,
+                Rate = user.Rate
             }).SingleOrDefault();
 
 

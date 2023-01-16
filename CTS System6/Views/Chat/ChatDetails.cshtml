@@ -1,0 +1,92 @@
+﻿@model CTS_System6.ViewModels.MessagesVM
+
+@{
+    ViewData["Title"] = "ChatDetails";
+}
+
+<h1>ChatDetails</h1>
+
+
+@if (Model.Status)
+{
+    <a class="btn btn-danger" asp-controller="Chat" asp-action="Block" asp-route-roomId="@Model.RoomId">Block</a>
+}
+else
+{
+    <a class="btn btn-success" asp-controller="Chat" asp-action="Block" asp-route-roomId="@Model.RoomId">Un Block</a>
+}
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Text
+            </th>
+            <th>
+                Chat Room
+            </th>
+            <th>
+                User ID
+            </th>
+            <th>
+                Send Date
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Messages)
+        {
+            <tr>
+                <td>
+                    @item.Text
+                </td>
+                <td>
+                    @item.ChatRoomId
+                </td>
+                <td>
+                    @item.UserId
+                </td>
+                <td>
+                    @item.SendDate
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<div class="container">
+    <div class="row p-1">
+        <div class="col-1">Status</div>
+        <div class="col-5"><input type="text" id="Status" value="@Model.Status" /></div>
+    </div>
+    <div class="row p-1">
+        <div class="col-1">Room Id</div>
+        <div class="col-5"><input type="text" id="RoomId" value="@Model.RoomId" /></div>
+    </div>
+    <div class="row p-1">
+        <div class="col-1">User</div>
+        <div class="col-5"><input type="text" id="userInput" value="@Model.Sender" /></div>
+    </div>
+    <div class="row p-1">
+        <div class="col-1">Message</div>
+        <div class="col-5"><input type="text" class="w-100" id="messageInput" /></div>
+    </div>
+    <div class="row p-1">
+        <div class="col-6 text-end">
+            <input type="button" id="sendButton" value="Send Message" />
+        </div>
+    </div>
+    <div class="row p-1">
+        <div class="col-6">
+            <hr />
+        </div>
+    </div>
+    <div class="row p-1">
+        <div class="col-6">
+            <ul id="messagesList"></ul>
+        </div>
+    </div>
+</div>

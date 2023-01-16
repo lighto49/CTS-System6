@@ -30,7 +30,6 @@ namespace CTS_System6.Controllers
         public ActionResult Index(string userId)
         {
 
-            //userId = "f28182d3-7db0-4ec7-9dd7-e57014170168";
             var user =  _userManager.Users.Where(u => u.Id == userId).ToList();
             var postedprojects = db.Projects.Where(p => p.CustomerId == userId).Count();
             var accomplishedprojects = db.Projects.Where(p => p.SelectedTranslator == userId && p.Status == "Completed").Count();

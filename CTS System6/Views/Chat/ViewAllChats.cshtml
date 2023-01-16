@@ -1,0 +1,51 @@
+﻿@model IEnumerable<CTS_System6.Models.ChatRoom>
+
+@{
+    ViewData["Title"] = "ViewAllChats";
+}
+
+<h1>ViewAllChats</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.UserA)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserB)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserAId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserBId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="ChatDetails" asp-route-chatId="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

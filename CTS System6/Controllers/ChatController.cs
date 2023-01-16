@@ -1,6 +1,7 @@
 ﻿using CTS_System6.Data;
 using CTS_System6.Models;
 using CTS_System6.Models.Repositories;
+using CTS_System6.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -33,25 +34,55 @@ namespace CTS_System6.Controllers
         {
             var id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var userChats = chatroomRepository.List(id);
-            return View();
+            return View(userChats);
         }
 
         public IActionResult ChatDetails(int chatId)
         {
-            ViewBag.ReciverId = db.ChatRooms.Where(c => c.Id == chatId).Select(c => c.UserBId);
-            var ChatMessages = messageRepository.List(Convert.ToString(chatId));
-            return View(ChatMessages);
+            var members = db.ChatRooms.Where(c => c.Id == chatId).Select(c => new { c.UserAId, c.UserBId, c.Status }).SingleOrDefault();
+            var currentUser = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var reciverId = "";
+            if (currentUser == members.UserAId)
+            {
+                reciverId = db.ChatRooms.Where(c => c.Id == chatId).Select(c => c.UserBId).FirstOrDefault();
+            }
+            else if(currentUser == members.UserBId)
+            {
+                reciverId = db.ChatRooms.Where(c => c.Id == chatId).Select(c => c.UserAId).FirstOrDefault();
+            }
+
+            ViewBag.ReciverId = reciverId;
+            ViewBag.SenderId = currentUser;
+            var ChatMessages = messageRepository.List(Convert.ToString(chatId)).ToList();
+            var model = new MessagesVM { 
+
+                Messages = ChatMessages,
+                Sender = currentUser,
+                Recevier = reciverId,
+                RoomId = chatId,
+                Status = members.Status
+
+            };
+
+            return View(model);
         }
-        
+
+        //[HttpPost]
+        //public IActionResult ChatDetails(int chatId)
+        //{
+
+        //}
+
         public IActionResult CreateChat(string userBId)
         {
             var userAId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var RoomId = db.ChatRooms.Where(c => c.UserAId == userAId && c.UserBId == userBId).Select(c => c.Id);
+            var RoomId = db.ChatRooms.Where(c => (c.UserAId == userAId && c.UserBId == userBId) || (c.UserAId == userBId && c.UserBId == userAId)).Select(c => c.Id).SingleOrDefault();
 
-            if(RoomId is not null)
+            if(RoomId > 0)
             {
                 // add users to the signalr group
-                RedirectToAction(controllerName: "Chat", actionName: "ChatDetails", routeValues: new { chatId = RoomId });
+
+                return RedirectToAction(controllerName: "Chat", actionName: "ChatDetails", routeValues: new { chatId = RoomId });
             }
             else
             {
@@ -63,17 +94,45 @@ namespace CTS_System6.Controllers
                     Status = true
                 };
                 chatroomRepository.Add(newRoom);
-                RoomId = db.ChatRooms.Where(c => c.UserAId == userAId && c.UserBId == userBId).Select(c => c.Id);
+                RoomId = db.ChatRooms.Where(c => c.UserAId == userAId && c.UserBId == userBId).Select(c => c.Id).SingleOrDefault();
                 // add users to the signalr group
-                RedirectToAction(controllerName: "Chat", actionName: "ChatDetails", routeValues: new { chatId = RoomId });
+                return RedirectToAction(controllerName: "Chat", actionName: "ChatDetails", routeValues: new { chatId = RoomId });
             }
-            return View();
         }
-        
-        [HttpPost]
-        public IActionResult SendMessage()
-        {
 
+
+        [HttpPost]
+        public JsonResult SaveMessage(string roomId, string Text)
+        {
+            var status = db.ChatRooms.Where(r => r.Id == Convert.ToInt32(roomId)).Select(r => r.Status).FirstOrDefault();
+            if (!status)
+            {
+                return Json("false");
+            }
+            else
+            {
+                var message = new Message
+                {
+                    ChatRoomId = Convert.ToInt32(roomId),
+                    SendDate = DateTime.Now,
+                    Text = Text,
+                    UserId = User.FindFirst(ClaimTypes.NameIdentifier).Value
+                };
+                messageRepository.Add(message);
+
+                return Json("true");
+            }
+        }
+
+        public ActionResult Block(int roomId)
+        {
+            var Room = db.ChatRooms.Where(r => r.Id == roomId).FirstOrDefault();
+
+            Room.Status = !Room.Status;
+
+            chatroomRepository.Update(Convert.ToString(roomId), Room);
+
+            return RedirectToAction(nameof(ChatDetails), new { chatId = roomId});
         }
     }
 }

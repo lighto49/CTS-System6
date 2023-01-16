@@ -198,17 +198,22 @@ else
     <label>Bid Counts:</label> @Model.BidsCount
 
     <h4>Bids</h4>
-    <ul>
-        @foreach (var item in Model.cc)
-        {
-        <li onclick="ViewProfile('@item.TranslatorId')">
-            @await Component.InvokeAsync("ProfileIcon", new { UserId = item.TranslatorId })
-            @item.BBody
-            @item.BCurrency
-            @item.BOffer
-        </li>
-        }
-    </ul>
+    <table>
+        <tbody>
+
+            @foreach (var item in Model.cc)
+            {
+                <tr>
+                    <td onclick="ViewProfile('@item.TranslatorId')">@await Component.InvokeAsync("ProfileIcon", new { UserId = item.TranslatorId })</td>
+                    <td>@item.BBody</td>
+                    <td>@item.BCurrency</td>
+                    <td>@item.BOffer</td>
+                    <td><a class="btn btn-primary" asp-controller="Chat" asp-action="CreateChat" asp-route-userBId="@item.TranslatorId">Chat</a></td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
 </div>
 <div>
     <a asp-action="Index">Back to List</a>

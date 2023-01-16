@@ -15,6 +15,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using SignalRChat.Hubs;
+
 
 namespace CTS_System6
 {
@@ -53,6 +55,8 @@ namespace CTS_System6
             services.AddScoped<ITranslatorRepository<Rate>, RateRepository>();
             services.AddScoped<ITranslatorRepository<Message>, MessageRepository>();
             services.AddScoped<ITranslatorRepository<ChatRoom>, ChatRoomRepository>();
+            services.AddSignalR();
+            services.AddSignalRCore();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -76,6 +80,9 @@ namespace CTS_System6
 
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseEndpoints(routes => {
+                routes.MapHub<ChatHub>("/chatHub");
+            });
 
             app.UseEndpoints(endpoints =>
             {

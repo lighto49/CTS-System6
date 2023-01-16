@@ -5,13 +5,16 @@ using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using CTS_System6.Data;
 using CTS_System6.Models;
+using CTS_System6.Models.Repositories;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 
@@ -25,21 +28,29 @@ namespace CTS_System6.Areas.Identity.Pages.Account
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly ITranslatorRepository<Languages> _languagesRepository;
+        private readonly ITranslatorRepository<TranslatorsLanguages> _translatorLanguagesRepository;
+        public List<SelectListItem> languages { get; set; }
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            ITranslatorRepository<Languages> languagesRepository,
+            ITranslatorRepository<TranslatorsLanguages> translatorLanguagesRepository)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _languagesRepository = languagesRepository;
+            _translatorLanguagesRepository = translatorLanguagesRepository;
         }
 
         [BindProperty]
         public InputModel Input { get; set; }
+        
 
         public string ReturnUrl { get; set; }
 
@@ -48,6 +59,8 @@ namespace CTS_System6.Areas.Identity.Pages.Account
         public class InputModel
         {
 
+            public string FromLanguageId { get; set; }
+            public string ToLanguageId { get; set; }
 
             [Display(Name = "User Type")]
             public string UserType { get; set; }
@@ -94,6 +107,13 @@ namespace CTS_System6.Areas.Identity.Pages.Account
         {
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            var lan = _languagesRepository.List();
+            languages = lan.Select(l => new SelectListItem
+            {
+                Value = l.Id.ToString(),
+                Text = l.Name
+
+            }).ToList();
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
@@ -117,6 +137,8 @@ namespace CTS_System6.Areas.Identity.Pages.Account
                     Status = false,
                     RegestratioDate = DateTime.Now
                 };
+
+                
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
@@ -129,6 +151,18 @@ namespace CTS_System6.Areas.Identity.Pages.Account
                         pageHandler: null,
                         values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
+
+                    if (Input.UserType == "Translator")
+                    {
+                        var relatedLanguage = new TranslatorsLanguages
+                        {
+                            TranslatorId = user.Id,
+                            FromLanguage = Convert.ToInt32(Input.FromLanguageId),
+                            ToLanguage = Convert.ToInt32(Input.ToLanguageId),
+                            Status = false
+                        };
+                        _translatorLanguagesRepository.Add(relatedLanguage);
+                    };
 
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
