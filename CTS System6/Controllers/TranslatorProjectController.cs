@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace CTS_System6.Controllers
 {
-    [Authorize(Roles = "Translator")]
+    //[Authorize(Roles = "Translator")]
     public class TranslatorProjectController : Controller
     {
         private readonly ITranslatorRepository<Rate> rateRepository;
@@ -37,8 +37,8 @@ namespace CTS_System6.Controllers
             var userid = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
             var TranslatorProject = from a in projects
-                                    join b in languages on a.FromLanguage equals b.Id
-                                    join c in languages on a.ToLanguage equals c.Id
+                                    join b in languages on a.FromLanguageId equals b.Id
+                                    join c in languages on a.ToLanguageId equals c.Id
                                     join d in users on a.CustomerId equals d.Id
                                     join e in userlanguages on new { a.FromLanguage, a.ToLanguage } equals new { e.FromLanguage, e.ToLanguage }
                                     where  e.TranslatorId == userid
@@ -63,80 +63,113 @@ namespace CTS_System6.Controllers
 
         public IActionResult Bid(int id)
         {
+
+
             List<Projects> projects = db.Projects.ToList();
             List<Languages> languages = db.Languages.ToList();
             List<ApplicationUser> users = db.Users.ToList();
             List<Bids> bids = db.Bids.ToList();
 
             var userid = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            //var bidstatus = db.Bids.Count(b => b.TranslatorId == userid);
-            var countquery = from a in bids
-                             where a.ProjectId == id
-                             select a.TranslatorId;
-            var count = countquery.Count();
-            var bidinfo = db.Bids.Where(a => a.TranslatorId == userid && a.ProjectId == id).Select(a => new { a.Body, a.Currency, a.Offer }).SingleOrDefault();
-            var TranslatorProject = new TranslatorProjectVM();
-            var rateinfo = db.Rate.Where(r => r.ProjectId == id && r.CreatedBy == userid).SingleOrDefault();
-            if (bidinfo == null) {
-                TranslatorProject = (from a in projects
-                                         join b in languages on a.FromLanguage equals b.Id
-                                         join c in languages on a.ToLanguage equals c.Id
-                                         join d in users on a.CustomerId equals d.Id
-                                         where a.Id == id
-                                         select new TranslatorProjectVM
-                                         {
-                                             Id = a.Id,
-                                             CustomerId = a.CustomerId,
-                                             Subject = a.Subject,
-                                             Body = a.Body,
-                                             Status = a.Status,
-                                             Currency = a.Currency,
-                                             Offer = a.Offer,
-                                             DeliveryDate = a.DeliveryDate,
-                                             PostDate = a.PostDate,
-                                             FromLanguageName = b.Name,
-                                             ToLanguageName = c.Name,
-                                             CustomerFirstName = d.FirstName,
-                                             CustomerLastName = d.LastName,
-                                             BidsCount = count.ToString(),
-                                             BidStatus = 0
-                                         }).FirstOrDefault();
-            }
-            else
+            var bidcount = db.Bids.Where(b => b.ProjectId == id).Count();
+            var trate = db.Rate.Where(r => r.ProjectId == id && r.CreatedBy == userid).ToList();
+            var crate = db.Rate.Where(r => r.ProjectId == id && r.UserId == userid).ToList();
+            var projectInfo = db.Projects.Where(p => p.Id == id).ToList();
+            var fromname = db.Languages.Where(l => l.Id == projectInfo.Select(p => p.FromLanguageId).SingleOrDefault()).SingleOrDefault();
+            var toname = db.Languages.Where(l => l.Id == projectInfo.Select(p => p.ToLanguageId).SingleOrDefault()).SingleOrDefault();
+            var bidinfo = db.Bids.Where(a => a.TranslatorId == userid && a.ProjectId == id).ToList();
+
+
+            var model = new TranslatorProjectVM
             {
-                TranslatorProject = (from a in projects
-                                         join b in languages on a.FromLanguage equals b.Id
-                                         join c in languages on a.ToLanguage equals c.Id
-                                         join d in users on a.CustomerId equals d.Id
-                                         where a.Id == id
-                                         select new TranslatorProjectVM
-                                         {
-                                             Id = a.Id,
-                                             CustomerId = a.CustomerId,
-                                             Subject = a.Subject,
-                                             Body = a.Body,
-                                             Status = a.Status,
-                                             Currency = a.Currency,
-                                             Offer = a.Offer,
-                                             DeliveryDate = a.DeliveryDate,
-                                             PostDate = a.PostDate,
-                                             FromLanguageName = b.Name,
-                                             ToLanguageName = c.Name,
-                                             CustomerFirstName = d.FirstName,
-                                             CustomerLastName = d.LastName,
-                                             BidsCount = count.ToString(),
-                                             BidStatus = 1,
-                                             BBody = bidinfo.Body,
-                                             BCurrency = bidinfo.Currency,
-                                             BOffer = bidinfo.Offer,
-                                             DeliveryScale = rateinfo.DeliveryScale,
-                                             CommunicationScale = rateinfo.CommunicationScale,
-                                             QualityScale = rateinfo.QualityScale,
-                                             Review = rateinfo.Review
-                                         }).FirstOrDefault();
-            }
+                TranslatorRate = trate,
+                RateAuth = (projectInfo.Where(r => r.Status == "Completed" && r.SelectedTranslator == userid).Count() > 0),
+                RateFlag = (trate.Count() > 0),
+                Id = id,
+                CustomerRateFlag = (crate.Count() > 0),
+                CustomerRate = crate,
+                ProjectInfo = projectInfo,
+                BidsCount = bidcount.ToString(),
+                FromName = fromname.Name,
+                ToName = toname.Name,
+                BidFlag = (bidinfo.Count() > 0),
+                Bid = bidinfo,
+                Currency = projectInfo.Select(p => p.Currency).FirstOrDefault()
+            };
+
+            return View(model);
+            //var bidstatus = db.Bids.Count(b => b.TranslatorId == userid);
+            //var countquery = (from a in bids
+            //                 where a.ProjectId == id
+            //                 select a.TranslatorId).Count();
+            //var bidinfo = db.Bids.Where(a => a.TranslatorId == userid && a.ProjectId == id).Select(a => new { a.Body, a.Currency, a.Offer }).SingleOrDefault();
+            //var TranslatorProject = new TranslatorProjectVM();
+            //var rateinfo = db.Rate.Where(r => r.ProjectId == id && r.CreatedBy == userid).SingleOrDefault();
+            //var BRate = db.Rate.Where(r => r.ProjectId == id && r.UserId == userid).ToList();
             
-            return View(TranslatorProject);
+            //if (bidinfo == null) {
+            //    TranslatorProject = (from a in projects
+            //                             join b in languages on a.FromLanguageId equals b.Id
+            //                             join c in languages on a.ToLanguageId equals c.Id
+            //                             join d in users on a.CustomerId equals d.Id
+            //                             where a.Id == id
+            //                             select new TranslatorProjectVM
+            //                             {
+            //                                 Id = a.Id,
+            //                                 CustomerId = a.CustomerId,
+            //                                 Subject = a.Subject,
+            //                                 Body = a.Body,
+            //                                 Status = a.Status,
+            //                                 Currency = a.Currency,
+            //                                 Offer = a.Offer,
+            //                                 DeliveryDate = a.DeliveryDate,
+            //                                 PostDate = a.PostDate,
+            //                                 FromLanguageName = b.Name,
+            //                                 ToLanguageName = c.Name,
+            //                                 CustomerFirstName = d.FirstName,
+            //                                 CustomerLastName = d.LastName,
+            //                                 BidsCount = countquery.ToString(),
+            //                                 BidStatus = 0,
+            //                                 Authorized = false
+            //                             }).FirstOrDefault();
+            //}
+            //else
+            //{
+            //    TranslatorProject = (from a in projects
+            //                             join b in languages on a.FromLanguageId equals b.Id
+            //                             join c in languages on a.ToLanguageId equals c.Id
+            //                             join d in users on a.CustomerId equals d.Id
+            //                             where a.Id == id
+            //                             select new TranslatorProjectVM
+            //                             {
+            //                                 Id = a.Id,
+            //                                 CustomerId = a.CustomerId,
+            //                                 Subject = a.Subject,
+            //                                 Body = a.Body,
+            //                                 Status = a.Status,
+            //                                 Currency = a.Currency,
+            //                                 Offer = a.Offer,
+            //                                 DeliveryDate = a.DeliveryDate,
+            //                                 PostDate = a.PostDate,
+            //                                 FromLanguageName = b.Name,
+            //                                 ToLanguageName = c.Name,
+            //                                 CustomerFirstName = d.FirstName,
+            //                                 CustomerLastName = d.LastName,
+            //                                 BidsCount = countquery.ToString(),
+            //                                 BidStatus = 1,
+            //                                 BBody = bidinfo.Body,
+            //                                 BCurrency = bidinfo.Currency,
+            //                                 BOffer = bidinfo.Offer,
+            //                                 DeliveryScale = rateinfo.DeliveryScale,
+            //                                 CommunicationScale = rateinfo.CommunicationScale,
+            //                                 QualityScale = rateinfo.QualityScale,
+            //                                 Review = rateinfo.Review,
+            //                                 BRate = BRate , 
+            //                                 Authorized = (a.SelectedTranslator == userid && a.Status == "Complete")
+            //                             }).SingleOrDefault();
+            //}
+            
+            //return View(TranslatorProject);
         }
 
         [HttpPost]
@@ -154,7 +187,7 @@ namespace CTS_System6.Controllers
                 Date = DateTime.Now,
                 Body = model.BBody,
                 Offer = model.BOffer,
-                Currency = model.BCurrency
+                Currency = model.Currency
             };
 
             db.Bids.Add(bid);

@@ -18,8 +18,11 @@ namespace CTS_System6.Models
         public string Currency { get; set; }
 
         //[ForeignKey("TranslatorId")]
-        public ApplicationUser ApplicationUser { get; set; }
+        //public ApplicationUser ApplicationUser { get; set; }
         //[ForeignKey("ProjectId")]
-        public Projects Projects { get; set; }
+        //public Projects Projects { get; set; }
+        public virtual ApplicationUser ApplicationUser { get; set; }
+        public virtual Projects Projects { get; set; }
+
     }
 }

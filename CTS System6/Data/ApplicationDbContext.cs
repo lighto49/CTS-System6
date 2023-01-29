@@ -39,16 +39,19 @@ namespace CTS_System6.Data
             builder.Entity<TranslatorsLanguages>()
                  .HasKey(t => t.Id);
 
-
+            //translator languages --- languages (from)
             builder.Entity<TranslatorsLanguages>()
-                .HasOne(p => p.Languages)
-                .WithMany(b => b.TranslatorsLanguagesList)
-                .HasForeignKey(b => b.FromLanguage);
+                .HasOne(p => p.FromLanguage)
+                .WithMany(b => b.TFromLanguages)
+                .HasForeignKey(b => b.FromLanguageId)
+                .OnDelete(DeleteBehavior.Restrict);
 
+            //translator languages --- languages (to)
             builder.Entity<TranslatorsLanguages>()
-                .HasOne(p => p.Languages)
-                .WithMany(b => b.TranslatorsLanguagesList)
-                .HasForeignKey(b => b.ToLanguage);
+                .HasOne(p => p.ToLanguage)
+                .WithMany(b => b.TToLanguages)
+                .HasForeignKey(b => b.ToLanguageId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<TranslatorsLanguages>()
                 .HasOne(p => p.ApplicationUser)
@@ -60,15 +63,19 @@ namespace CTS_System6.Data
                 .WithMany(b => b.ProjectsList)
                 .HasForeignKey(b => b.CustomerId);
 
+            //projects --- languages (from)
             builder.Entity<Projects>()
-                .HasOne(p => p.Languages)
-                .WithMany(b => b.ProjectsList)
-                .HasForeignKey(b => b.FromLanguage);
+                .HasOne(p => p.FromLanguage)
+                .WithMany(b => b.PFromLanguages)
+                .HasForeignKey(b => b.FromLanguageId)
+                .OnDelete(DeleteBehavior.Restrict);
 
+            //translator languages --- languages (to)
             builder.Entity<Projects>()
-                .HasOne(p => p.Languages)
-                .WithMany(b => b.ProjectsList)
-                .HasForeignKey(b => b.ToLanguage);
+                .HasOne(p => p.ToLanguage)
+                .WithMany(b => b.PToLanguages)
+                .HasForeignKey(b => b.ToLanguageId)
+                .OnDelete(DeleteBehavior.Restrict);
 
 
             builder.Entity<Bids>()

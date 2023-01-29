@@ -9,11 +9,15 @@ namespace CTS_System6.Models
     {
         public int Id { get; set; }
         public string UserAId { get; set; }
-        public ApplicationUser UserA { get; set; }
+        //public ApplicationUser UserA { get; set; }
+        public virtual ApplicationUser UserA { get; set; }
         public string UserBId { get; set; }
-        public ApplicationUser UserB { get; set; }
+        //public ApplicationUser UserB { get; set; }
+        public virtual ApplicationUser UserB { get; set; }
         public DateTime StartDate { get; set; }
         public bool Status { get; set; }
-        public List<Message> Messages { get; set; }
+        //public List<Message> Messages { get; set; }
+        public virtual ICollection<Message> Messages { get; set; }
+
     }
 }

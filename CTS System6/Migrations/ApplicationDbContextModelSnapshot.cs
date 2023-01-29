@@ -220,6 +220,7 @@ namespace CTS_System6.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -272,7 +273,7 @@ namespace CTS_System6.Migrations
                     b.Property<DateTime>("DeliveryDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("FromLanguage")
+                    b.Property<int>("FromLanguageId")
                         .HasColumnType("int");
 
                     b.Property<float>("Offer")
@@ -290,14 +291,16 @@ namespace CTS_System6.Migrations
                     b.Property<string>("Subject")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ToLanguage")
+                    b.Property<int>("ToLanguageId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
 
-                    b.HasIndex("ToLanguage");
+                    b.HasIndex("FromLanguageId");
+
+                    b.HasIndex("ToLanguageId");
 
                     b.ToTable("Projects");
                 });
@@ -309,13 +312,13 @@ namespace CTS_System6.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("FromLanguage")
+                    b.Property<int>("FromLanguageId")
                         .HasColumnType("int");
 
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
 
-                    b.Property<int>("ToLanguage")
+                    b.Property<int>("ToLanguageId")
                         .HasColumnType("int");
 
                     b.Property<string>("TranslatorId")
@@ -323,7 +326,9 @@ namespace CTS_System6.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ToLanguage");
+                    b.HasIndex("FromLanguageId");
+
+                    b.HasIndex("ToLanguageId");
 
                     b.HasIndex("TranslatorId");
 
@@ -521,23 +526,37 @@ namespace CTS_System6.Migrations
                         .WithMany("ProjectsList")
                         .HasForeignKey("CustomerId");
 
-                    b.HasOne("CTS_System6.Models.Languages", "Languages")
-                        .WithMany("ProjectsList")
-                        .HasForeignKey("ToLanguage")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.HasOne("CTS_System6.Models.Languages", "FromLanguage")
+                        .WithMany("PFromLanguages")
+                        .HasForeignKey("FromLanguageId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CTS_System6.Models.Languages", "ToLanguage")
+                        .WithMany("PToLanguages")
+                        .HasForeignKey("ToLanguageId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("ApplicationUser");
 
-                    b.Navigation("Languages");
+                    b.Navigation("FromLanguage");
+
+                    b.Navigation("ToLanguage");
                 });
 
             modelBuilder.Entity("CTS_System6.Models.TranslatorsLanguages", b =>
                 {
-                    b.HasOne("CTS_System6.Models.Languages", "Languages")
-                        .WithMany("TranslatorsLanguagesList")
-                        .HasForeignKey("ToLanguage")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.HasOne("CTS_System6.Models.Languages", "FromLanguage")
+                        .WithMany("TFromLanguages")
+                        .HasForeignKey("FromLanguageId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CTS_System6.Models.Languages", "ToLanguage")
+                        .WithMany("TToLanguages")
+                        .HasForeignKey("ToLanguageId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("CTS_System6.Models.ApplicationUser", "ApplicationUser")
@@ -546,7 +565,9 @@ namespace CTS_System6.Migrations
 
                     b.Navigation("ApplicationUser");
 
-                    b.Navigation("Languages");
+                    b.Navigation("FromLanguage");
+
+                    b.Navigation("ToLanguage");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -620,9 +641,13 @@ namespace CTS_System6.Migrations
 
             modelBuilder.Entity("CTS_System6.Models.Languages", b =>
                 {
-                    b.Navigation("ProjectsList");
+                    b.Navigation("PFromLanguages");
 
-                    b.Navigation("TranslatorsLanguagesList");
+                    b.Navigation("PToLanguages");
+
+                    b.Navigation("TFromLanguages");
+
+                    b.Navigation("TToLanguages");
                 });
 
             modelBuilder.Entity("CTS_System6.Models.Projects", b =>

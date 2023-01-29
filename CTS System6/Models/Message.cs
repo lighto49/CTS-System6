@@ -10,7 +10,8 @@ namespace CTS_System6.Models
         public int Id { get; set; }
         public string Text { get; set; }
         public int ChatRoomId { get; set; }
-        public ChatRoom ChatRoom { get; set; }
+        //public ChatRoom ChatRoom { get; set; }
+        public virtual ChatRoom ChatRoom { get; set; }
         public string UserId { get; set; }
         public DateTime SendDate { get; set; }
     }

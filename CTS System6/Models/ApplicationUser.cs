@@ -23,16 +23,18 @@ namespace CTS_System6.Models
 
         public DateTime RegestratioDate  { get; set; }
         public DateTime StatusDate  { get; set; }
-        public List<Bids> BidsList { get; set; }
+        //public List<Bids> BidsList { get; set; }
         //public List<Rate> RateList { get; set; }
-        public List<TranslatorsLanguages> TranslatorLanguagesList { get; set; }
-        public List<Projects> ProjectsList { get; set; }
-        public List<ChatRoom> UserAChatRoom { get; set; }
-        public List<ChatRoom> UserBChatRoom { get; set; }
+        //public List<TranslatorsLanguages> TranslatorLanguagesList { get; set; }
+        //public List<Projects> ProjectsList { get; set; }
+        //public List<ChatRoom> UserAChatRoom { get; set; }
+        //public List<ChatRoom> UserBChatRoom { get; set; }
 
-        public static implicit operator List<object>(ApplicationUser v)
-        {
-            throw new NotImplementedException();
-        }
+        public virtual ICollection<Bids> BidsList { get; set; }
+        public virtual ICollection<TranslatorsLanguages> TranslatorLanguagesList { get; set; }
+        public virtual ICollection<Projects> ProjectsList { get; set; }
+        public virtual ICollection<ChatRoom> UserAChatRoom { get; set; }
+        public virtual ICollection<ChatRoom> UserBChatRoom { get; set; }
+
     }
 }

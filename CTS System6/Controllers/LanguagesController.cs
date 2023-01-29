@@ -28,11 +28,12 @@ namespace CTS_System6.Controllers
         }
 
         // GET: LanguagesController/Details/5
-        public ActionResult Details(string id)
-        {
-            var language = languagesRepository.Find(id);
-            return View(language);
-        }
+        // No need
+        //public ActionResult Details(string id)
+        //{
+        //    var language = languagesRepository.Find(id);
+        //    return View(language);
+        //}
 
         // GET: LanguagesController/Create
         public ActionResult Create()
@@ -51,8 +52,9 @@ namespace CTS_System6.Controllers
                 languagesRepository.Add(language);
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch (Exception e)
             {
+                ModelState.AddModelError(string.Empty, e.Message);
                 return View();
             }
         }
@@ -91,13 +93,15 @@ namespace CTS_System6.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(string id, Languages language)
         {
+
             try
             {
                 languagesRepository.Delete(id);
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch (Exception e)
             {
+                ModelState.AddModelError(string.Empty, e.Message);
                 return View();
             }
         }

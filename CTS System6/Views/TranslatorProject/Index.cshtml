@@ -1,89 +1,57 @@
 ﻿@model IEnumerable<CTS_System6.ViewModels.TranslatorProjectVM>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Projects";
 }
 
-<h1>Projects</h1>
+<section>
+    <div class="container" data-aos="fade-up">
+
+        <div class="section-title">
+            <h2>Projects</h2>
+        </div>
 
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
+        <div class="row align-items-top row-cols-2" >
 
-            </th>
+            @foreach (var item in Model)
+            {
+                <div class="row p-3 ">
+                    <div class="col-lg-2">
+                        <div onclick="ViewProfile('@item.CustomerId')">
+                            @await Component.InvokeAsync("ProfileIcon", new { UserId = item.CustomerId })
+                        </div>
+                    </div>
+                    <div class="col-lg-10">
+                        <div class="card">
+                            <div class="card-header">@Html.DisplayFor(modelItem => item.Status)</div>
+                            <div class="card-body">
+                                <h5 class="card-title">@Html.DisplayFor(modelItem => item.Subject)</h5>
+                                <hr />
+                                Post date: @Html.DisplayFor(modelItem => item.PostDate) Deliver date: @Html.DisplayFor(modelItem => item.DeliveryDate) <br />
+                                Price: @Html.DisplayFor(modelItem => item.Offer) @Html.DisplayFor(modelItem => item.Currency) <br />
+                                @if (Convert.ToInt32(item.BidsCount) > 0)
+                                {
+                                    @Html.DisplayFor(modelItem => item.BidsCount) <p> Translators Applied on this project.</p>
+                                }
+                                else
+                                {
+                                    <p>There are no bids yet</p>
+                                }
 
-            <th>
-                @Html.DisplayNameFor(model => model.Subject)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Currency)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Offer)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DeliveryDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PostDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FromLanguageName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ToLanguageName)
-            </th>
-            <th>
-                Customer Name
-            </th>
-
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td  onclick="ViewProfile('@item.CustomerId')">
-                @await Component.InvokeAsync("ProfileIcon", new { UserId = item.CustomerId })
-            </td>
-
-            <td>
-                @Html.DisplayFor(modelItem => item.Subject)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Currency)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Offer)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DeliveryDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PostDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FromLanguageName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ToLanguageName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CustomerFirstName) @Html.DisplayFor(modelItem => item.CustomerLastName)
-            </td>
-
-            <td>
-                <a asp-action="Bid" asp-route-id="@item.Id">Bid</a> |
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+                            </div>
+                            <div class="card-footer">
+                                <div class="float-lg-left">
+                                    @Html.DisplayFor(modelItem => item.FromLanguageName) - @Html.DisplayFor(modelItem => item.ToLanguageName)
+                                </div>
+                                <div class="float-lg-right">
+                                    <a asp-action="Bid" asp-route-id="@item.Id" class="btn btn-info">Bid</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>

@@ -1,4 +1,5 @@
-﻿using CTS_System6.Data;
+﻿using CTS_System6.ConstLists;
+using CTS_System6.Data;
 using CTS_System6.Models;
 using CTS_System6.Models.Repositories;
 using CTS_System6.ViewModels;
@@ -129,8 +130,7 @@ namespace CTS_System6.Controllers
                 Review = review,
                 Status = currentstatus
             };
-
-
+            
             return View(model);
         }
 
@@ -140,6 +140,7 @@ namespace CTS_System6.Controllers
             var CustomerId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             ViewBag.PS = "Available";
             ViewBag.CID = CustomerId;
+            //ViewBag.StatusList = new SelectList(Currency.);
             return View();
         }
 

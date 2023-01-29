@@ -1,48 +1,43 @@
-﻿@model CTS_System6.Models.TranslatorsLanguages
+﻿@model CTS_System6.ViewModels.TranslatorLanguageVM
 
 @{
-    ViewData["Title"] = "Create";
-    var TID = ViewBag.TID;
+    ViewData["Title"] = "Add";
 }
 
-<h1>Create</h1>
 
-<h4>TranslatorsLanguages</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            @*<div class="form-group">
-                <label asp-for="Id" class="control-label"></label>
-                <input asp-for="Id" class="form-control" />
-                <span asp-validation-for="Id" class="text-danger"></span>
-            </div>*@
-            <div class="form-group">
-                <label asp-for="TranslatorId" class="control-label"></label>
-                <input asp-for="TranslatorId" class="form-control" value="@TID"/>
-                <span asp-validation-for="TranslatorId" class="text-danger"></span>
+<section>
+    <div class="container" data-aos="fade-up">
+
+        <div class="section-title">
+            <h2>Add Languages</h2>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <form asp-action="Create" method="post">
+                    <div class="row mb-3 align-items-top">
+                        <div class="col-lg-5">
+                            <select class="form-select custom-select" asp-for="FromLanguageId" asp-items="ViewBag.Lan">
+                                <option selected>From Language</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-5">
+                            <select class="form-select custom-select" asp-for="ToLanguageId" asp-items="ViewBag.Lan">
+                                <option selected>To Language</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-2">
+                            <button type="submit" class="btn btn-primary">Add</button>
+                            <a asp-action="Index" class="btn btn-secondary">Back</a>
+                        </div>
+                    </div>
+                    <div class="alert alert-danger bg-danger text-light border-0 alert-dismissible fade show" role="alert" asp-validation-summary="ModelOnly">
+                    </div>
+                </form>
             </div>
-            <div class="form-group">
-                <label asp-for="FromLanguage" class="control-label"></label>
-                <input asp-for="FromLanguage" class="form-control" />
-                <span asp-validation-for="FromLanguage" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ToLanguage" class="control-label"></label>
-                <input asp-for="ToLanguage" class="form-control" />
-                <span asp-validation-for="ToLanguage" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+</section>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

@@ -157,8 +157,8 @@ namespace CTS_System6.Areas.Identity.Pages.Account
                         var relatedLanguage = new TranslatorsLanguages
                         {
                             TranslatorId = user.Id,
-                            FromLanguage = Convert.ToInt32(Input.FromLanguageId),
-                            ToLanguage = Convert.ToInt32(Input.ToLanguageId),
+                            FromLanguageId = Convert.ToInt32(Input.FromLanguageId),
+                            ToLanguageId = Convert.ToInt32(Input.ToLanguageId),
                             Status = false
                         };
                         _translatorLanguagesRepository.Add(relatedLanguage);

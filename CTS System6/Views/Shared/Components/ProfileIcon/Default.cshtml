@@ -1,6 +1,6 @@
 ﻿@model CTS_System6.Models.ApplicationUser
 
-<img class="avatar rounded-circle" alt="profile" src="data:image/*;base64,@(Convert.ToBase64String(Model.ProfilePictuer))" />
+@*<img class="avatar rounded-circle" alt="profile" src="data:image/*;base64,@(Convert.ToBase64String(Model.ProfilePictuer))" />
 <div>
     <label>@Model.FirstName @Model.LastName</label>
 </div>
@@ -20,4 +20,50 @@
             }
         }
     </span>
-</div>
+</div>*@
+
+<style>
+    .gradient-custom {
+        /* fallback for old browsers */
+        background: #f6d365;
+        /* Chrome 10-25, Safari 5.1-6 */
+        background: -webkit-linear-gradient(to right bottom, rgba(246, 211, 101, 1), rgba(253, 160, 133, 1));
+        /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        background: linear-gradient(to right bottom, rgba(246, 211, 101, 1), rgba(253, 160, 133, 1))
+    }
+</style>
+
+
+        <div class="row d-flex justify-content-center align-items-center">
+            <div class="col col-lg-6 mb-4 mb-lg-0">
+                <div class="card mb-3" style="border-radius: .5rem;">
+                    <div class="row g-0">
+                        <div class="col-md-12 gradient-custom text-center text-white"
+                             style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem;">
+                            <img src="data:image/*;base64,@(Convert.ToBase64String(Model.ProfilePictuer))"
+                                 alt="Avatar" class="img-fluid my-5" style="width: 80px;" />
+                            <h5>@Model.FirstName @Model.LastName</h5>
+                            <p>
+                                <span class="text-warning">
+                                    @for (int i = 1; i <= 5; i++)
+                                    {
+                                        if (i <= Model.Rate)
+                                        {
+                                            <i class="fa-solid fa-star"></i>
+
+                                        }
+                                        else
+                                        {
+                                            <i class="fa-regular fa-star"></i>
+
+                                        }
+                                    }
+                                </span>
+                            </p>
+                            <i class="far fa-edit mb-5"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+

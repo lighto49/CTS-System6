@@ -42,5 +42,23 @@ namespace CTS_System6.Controllers
             await _roleManager.CreateAsync(new IdentityRole(model.Name.Trim()));
             return RedirectToAction(nameof(Index));
         }
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(string id)
+        {
+
+            try
+            {
+                var role = await _roleManager.FindByIdAsync(id);
+                await _roleManager.DeleteAsync(role);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception e)
+            {
+                ModelState.AddModelError(string.Empty, e.Message);
+                return RedirectToAction(nameof(Index));
+            }
+        }
     }
 }

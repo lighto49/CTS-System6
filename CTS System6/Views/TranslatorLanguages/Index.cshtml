@@ -1,53 +1,46 @@
-﻿@model IEnumerable<CTS_System6.Models.TranslatorsLanguages>
+﻿@model IEnumerable<CTS_System6.ViewModels.TranslatorLanguageVM>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "My Languages";
 }
 
-<h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TranslatorId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FromLanguage)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ToLanguage)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TranslatorId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FromLanguage)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ToLanguage)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.TranslatorId }) |
-                @Html.ActionLink("Details", "Details", new { id=item.TranslatorId }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.TranslatorId })
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<section>
+    <div class="container" data-aos="fade-up">
+        <div class="section-title">
+            <h2>My Languages</h2>
+        </div>
+        <div class="m-2">
+            <a class="btn btn-primary" asp-action="Create"><i class="bx bx-add-to-queue"></i> Add Language</a>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <div class="row align-items-top">
+                    @foreach (var item in Model)
+                    {
+                        <div class="col-lg-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    @if (item.Status)
+                                    {
+                                        <p>Active</p>
+                                    }
+                                    else
+                                    {
+                                        <p>Not Active</p>
+                                    }
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">@item.FromName - @item.ToName</h5>
+                                </div>
+                                <div class="card-footer">
+                                    <a asp-action="Delete" asp-controller="TranslatorLanguages" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

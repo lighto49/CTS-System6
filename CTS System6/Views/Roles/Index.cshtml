@@ -4,28 +4,38 @@
     ViewData["Title"] = "Roles";
 }
 
-<h1>Roles</h1>
 
-<partial name="_RoleForm" model="new RoleFormViewModel()" />
 
-<table class="table table-striped mt-4">
-    <thead>
-        <tr class="bg-primary text-white">
-            <th>Id</th>
-            <th>Role Name</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var role in Model)
-        {
-            <tr>
-                <td>@role.Id</td>
-                <td>@role.Name</td>
-            </tr>
-        }
-    </tbody>
+<section>
+    <div class="container" data-aos="fade-up">
 
-</table>
+        <div class="section-title">
+            <h2>Manage Roles</h2>
+        </div>
+
+        <partial name="_RoleForm" model="new RoleFormViewModel()" />
+
+
+
+        <div class="row align-items-top">
+            @foreach (var item in Model)
+            {
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">@item.Name</h5>
+                            <a asp-action="Delete" asp-controller="Roles" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="alert alert-danger bg-danger text-light border-0 alert-dismissible fade show" role="alert" asp-validation-summary="ModelOnly">
+        </div>
+    </div>
+
+</section>
+
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

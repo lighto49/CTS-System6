@@ -1,41 +1,33 @@
 ﻿@model IEnumerable<CTS_System6.Models.Languages>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Languages";
 }
 
-<h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new {  id=item.Id  }) |
-                @Html.ActionLink("Details", "Details", new {  id=item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new {  id= item.Id })
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+
+<section>
+    <div class="container" data-aos="fade-up">
+        <div class="section-title">
+            <h2>Manage Languages</h2>
+        </div>
+        <div class="m-2">
+            <a class="btn btn-primary" asp-action="Create" asp-controller="Languages"><i class="bx bx-add-to-queue"></i> Add Language</a>
+        </div>
+        <div class="row align-items-top">
+            @foreach (var item in Model)
+            {
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">@Html.DisplayFor(modelItem => item.Name)</h5>
+                            <a asp-action="Edit" asp-controller="Languages" asp-route-id="@item.Id" class="btn btn-primary">Edit</a>
+                            <a asp-action="Delete" asp-controller="Languages" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+                        </div>
+                    </div>
+                </div>
+             }
+        </div>
+    </div>
+</section>
+

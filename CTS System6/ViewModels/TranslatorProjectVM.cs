@@ -1,6 +1,8 @@
-﻿using CTS_System6.Models;
+﻿using CTS_System6.Data;
+using CTS_System6.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,7 +20,9 @@ namespace CTS_System6.ViewModels
         public string Status { get; set; }
         public string Currency { get; set; }
         public float Offer { get; set; }
+        [DisplayFormat(DataFormatString = "{0:dd/MMM/yyyy}")]
         public DateTime DeliveryDate { get; set; }
+        [DisplayFormat(DataFormatString = "{0:dd/MMM/yyyy}")]
         public DateTime PostDate { get; set; }
 
         //languages attributes
@@ -45,6 +49,32 @@ namespace CTS_System6.ViewModels
         public int DeliveryScale { get; set; }
         public int QualityScale { get; set; }
         public int CommunicationScale { get; set; }
+        public string Selected { get; set; }
+
+        public List<Rate> BRate { get; set; }
+        public bool Authorized { get; set; }
+
+
+
+
+
+
+        ///new version of view model
+        ///
+
+
+        public List<Rate> TranslatorRate { get; set; }
+        public List<Rate> CustomerRate { get; set; }
+        public List<Projects> ProjectInfo { get; set; }
+        public List<Bids> Bid { get; set; }
+        public string FromName { get; set; }
+        public string ToName { get; set; }
+        public string BidBody { get; set; }
+        public int BidOffer { get; set; }
+        public bool RateAuth { get; set; }
+        public bool RateFlag { get; set; }
+        public bool CustomerRateFlag { get; set; }
+        public bool BidFlag { get; set; }
 
 
     }

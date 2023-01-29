@@ -24,7 +24,9 @@ namespace CTS_System6.Data
         [Required]
         public string Review { get; set; }
 
-        [ForeignKey("ProjectId")]
-        public Projects Project { get; set; }
+        //[ForeignKey("ProjectId")]
+        //public Projects Project { get; set; }
+        public virtual Projects Project { get; set; }
+
     }
 }
