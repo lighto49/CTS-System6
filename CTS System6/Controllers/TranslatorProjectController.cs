@@ -33,21 +33,25 @@ namespace CTS_System6.Controllers
             List<Projects> projects = db.Projects.ToList();
             List<Languages> languages = db.Languages.ToList();
             List<ApplicationUser> users = db.Users.ToList();
+            List<Bids> bids = db.Bids.ToList();
             List<TranslatorsLanguages> userlanguages = db.TranslatorsLanguages.ToList();
             var userid = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var bidcount = bids.GroupBy(b => b.ProjectId).Select(b => new { projectId = b.Key, bidscount = b.Count() }).ToList();
 
-            var TranslatorProject = from a in projects
+            var TranslatorProject = (from a in projects
                                     join b in languages on a.FromLanguageId equals b.Id
                                     join c in languages on a.ToLanguageId equals c.Id
                                     join d in users on a.CustomerId equals d.Id
                                     join e in userlanguages on new { a.FromLanguage, a.ToLanguage } equals new { e.FromLanguage, e.ToLanguage }
+                                    join bb in bidcount on a.Id equals bb.projectId into bidlist
+                                    from bcount in bidlist.DefaultIfEmpty()
                                     where  e.TranslatorId == userid
                                     select new TranslatorProjectVM
                                     {
                                         CustomerId = d.Id,
                                         Id = a.Id,
                                         Subject = a.Subject,
-                                        Status = a.Status,
+                                        Status = a.Status,  
                                         Currency = a.Currency,
                                         Offer = a.Offer,
                                         DeliveryDate = a.DeliveryDate,
@@ -55,8 +59,10 @@ namespace CTS_System6.Controllers
                                         FromLanguageName = b.Name,
                                         ToLanguageName = c.Name,
                                         CustomerFirstName = d.FirstName,
-                                        CustomerLastName = d.LastName
-                                    };
+                                        CustomerLastName = d.LastName,
+                                        BidsCount = bcount == null ? "0" : bcount.bidscount.ToString()
+                                        
+                                    }).ToList();
         
             return View(TranslatorProject);
         }

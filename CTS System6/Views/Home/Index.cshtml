@@ -1,6 +1,42 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+<link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+<link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+<link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+<link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+<link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+<link href="assets/img/favicon.png" rel="icon">
+<link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+<header id="header" class="fixed-top header-scrolled">
+    <div class="container d-flex align-items-center">
+
+        <h1 class="logo me-auto"><a asp-area="" asp-controller="Home" asp-action="Index">Trusted Translator</a></h1>
+        <!-- Uncomment below if you prefer to use an image logo -->
+        @*<a href="index.html" class="logo me-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>*@
+
+
+        <nav id="navbar" class="navbar text-center">
+            <ul>
+                <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
+                <li><a class="nav-link scrollto" href="#about">About</a></li>
+                <li><a class="nav-link scrollto" href="#services">Services</a></li>
+                <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
+                <li><a class="nav-link scrollto" href="">Translators</a></li>  @*here we will add a translator view for public*@
+                @*<li><a class="getstarted scrollto" href="#about">Get Started</a></li>*@
+            </ul>
+            <ul>
+                <li><a class="getstarted scrollto" asp-area="Identity" asp-page="/Account/Register">Register</a></li>
+                <li><a class="getstarted scrollto" asp-area="Identity" asp-page="/Account/Login">Login</a></li>
+            </ul>
+            <i class="bi bi-list mobile-nav-toggle"></i>
+        </nav>
+
+    </div>
+</header>
 
 <section id="hero" class="d-flex align-items-center">
 
@@ -12,8 +48,13 @@
                 </h1>
                 <h2>53K+ trusted translators and translation companies</h2>
                 @*<div class="d-flex justify-content-center justify-content-lg-start">
-                    <a href="https://www.youtube.com/watch?v=jDDaplaOz7Q" class="glightbox btn-watch-video"><i class="bi bi-play-circle"></i><span>Watch Video</span></a>
-                </div>*@
+                        <a href="https://www.youtube.com/watch?v=jDDaplaOz7Q" class="glightbox btn-watch-video"><i class="bi bi-play-circle"></i><span>Watch Video</span></a>
+                    </div>*@
+
+                <div class="d-flex justify-content-center justify-content-lg-start">
+                    <a class="btn btn-get-started scrollto" asp-area="Identity" asp-page="/Account/Register">Register</a>
+                    <a class="glightbox btn-watch-video " asp-area="Identity" asp-page="/Account/Login">Login</a>
+                </div>
             </div>
             <div class="col-lg-4 order-1 order-lg-2 hero-img" data-aos="zoom-in" data-aos-delay="200">
                 <img src="assets/img/world.png" class="img-fluid animated" alt="">

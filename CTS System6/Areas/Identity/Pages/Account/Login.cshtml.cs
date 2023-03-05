@@ -94,7 +94,7 @@ namespace CTS_System6.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    return LocalRedirect(returnUrl);
+                    return RedirectToAction(controllerName: "TranslatorProject", actionName: "Index");
                 }
                 if (result.RequiresTwoFactor)
                 {
